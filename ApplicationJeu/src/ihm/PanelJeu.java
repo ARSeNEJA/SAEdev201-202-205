@@ -80,15 +80,16 @@ public class PanelJeu extends JPanel
         
 
         //
-        panelInformation.add(panelMancheScore);
-        panelInformation.add(Box.createVerticalStrut(15));
+        
         panelInformation.add(panelPioche);
         panelInformation.add(Box.createVerticalStrut(5));
         panelInformation.add(lblMinuterie);
         panelInformation.add(Box.createVerticalStrut(15));
         panelInformation.add(panelDefausse);
         panelInformation.add(Box.createVerticalGlue()); 
-        panelInformation.add(panelActions);
+        panelInformation.add(panelMancheScore);
+        panelInformation.add(Box.createVerticalStrut(15));
+        
 
         this.add(panelPlateau, BorderLayout.CENTER);
         this.add(panelInformation, BorderLayout.WEST);
@@ -112,5 +113,20 @@ public class PanelJeu extends JPanel
         }
 
             
+    }
+
+    private JLabel creerVisuelCarte(String texte, Color fond, Color couleurTexte) 
+    {
+        JLabel lblCarte = new JLabel("<html><center>" + texte.replace("\n", "<br>") + "</center></html>", SwingConstants.CENTER);
+        lblCarte.setPreferredSize(new Dimension(100, 140));
+        lblCarte.setOpaque(true);
+        lblCarte.setBackground(fond);
+        lblCarte.setForeground(couleurTexte);
+        lblCarte.setFont(new Font("Arial", Font.BOLD, 14));
+        lblCarte.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(Color.BLACK, 2, true),
+                BorderFactory.createEmptyBorder(5, 5, 5, 5)
+        ));
+        return lblCarte;
     }
 }
