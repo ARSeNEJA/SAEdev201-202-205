@@ -2,3 +2,6 @@
 
 ./ihm/FrameJeu.java
 ./ihm/PanelJeu.java
+
+./ihm/FrameFermeture.java
+./ihm/PanelFermeture.java
