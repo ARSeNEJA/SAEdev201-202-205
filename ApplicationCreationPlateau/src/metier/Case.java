@@ -1,6 +1,6 @@
 package metier;
 
-public class Position
+public class Case
 {
 	/*--------------------*/
 	/*      Attributs     */
@@ -11,7 +11,7 @@ public class Position
 	/*---------------------*/
 	/*     Constructeur    */
 	/*---------------------*/
-	public Position(int colonne, int ligne)
+	public Case(int colonne, int ligne)
 	{
 		this.colonne = colonne;
 		this.ligne = ligne;

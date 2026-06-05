@@ -26,9 +26,9 @@ public class Atome
 	/*---------------------*/
 	/*       Methodes      */
 	/*---------------------*/
-	public Position getPosition()       {return this.position;}
-	public TypeAtome getType()          {return this.type;}
-	public ArrayList<Atome> getVoisins(){return this.voisins;}
+	public Position         getPosition()      {return this.position;}
+	public TypeAtome        getType()          {return this.type;}
+	public ArrayList<Atome> getVoisins()       {return this.voisins;}
 
 	public void viderVoisins(){this.voisins.clear();}
 
