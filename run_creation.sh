@@ -12,4 +12,4 @@ javac -encoding UTF-8 -d class \
 	src/metier/enums/*.java \
 	src/ihm/*.java
 
-java -cp class controleur.Controleur
+java -cp class Controleur
