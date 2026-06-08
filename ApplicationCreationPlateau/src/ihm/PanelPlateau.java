@@ -52,7 +52,7 @@ public class PanelPlateau extends JPanel implements ActionListener
 	/*     Attributs    */
 	/*------------------*/
 	private Plateau plateau;
-	private FenetreParametres fenetreParametres;
+	private Fenetre fenetreParametres;
 	private int zoneActive;
 	private String modeEdition;
 	private TypeAtome typeAtome;
@@ -62,7 +62,7 @@ public class PanelPlateau extends JPanel implements ActionListener
 	/*------------------*/
 	/*   Constructeur   */
 	/*------------------*/
-	public PanelPlateau(Plateau plateau, FenetreParametres fenetreParametres)
+	public PanelPlateau(Plateau plateau, Fenetre fenetreParametres)
 	{
 		this.plateau           = plateau;
 		this.fenetreParametres = fenetreParametres;
@@ -98,10 +98,10 @@ public class PanelPlateau extends JPanel implements ActionListener
 	private void actualiserChoixDepuisFenetre()
 	{
 		this.actualiserChoixEdition(
-				this.fenetreParametres.getPanelBarreEdition().getModeEditionChoisi(),
+				this.fenetreParametres.getPanelModificationPlateau().getModeEditionChoisi(),
 				this.fenetreParametres.getPanelParametres().getZoneActive(),
-				this.fenetreParametres.getPanelBarreEdition().getTypeAtomeChoisi(),
-				this.fenetreParametres.getPanelBarreEdition().getCouleurBaseChoisie());
+				this.fenetreParametres.getPanelModificationPlateau().getTypeAtomeChoisi(),
+				this.fenetreParametres.getPanelModificationPlateau().getCouleurBaseChoisie());
 	}
 
 	private class GererSouris extends MouseAdapter

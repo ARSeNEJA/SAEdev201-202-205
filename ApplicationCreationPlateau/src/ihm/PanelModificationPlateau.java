@@ -1,10 +1,13 @@
 package ihm;
 
+import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.JButton;
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -12,36 +15,29 @@ import javax.swing.JPanel;
 import metier.enums.Couleur;
 import metier.enums.TypeAtome;
 
-public class PanelBarreEdition extends JPanel implements ActionListener
+public class PanelModificationPlateau extends JPanel implements ActionListener
 {
 	/*------------------*/
 	/*     Attributs    */
 	/*------------------*/
-	private FenetreParametres fenetreParametres;
 	private JComboBox<String>    comboModeEdition;
 	private JComboBox<TypeAtome> comboTypeAtome;
 	private JComboBox<Couleur>   comboCouleurBase;
-	private JButton boutonOuvrir;
-	private JButton boutonEnregistrer;
-	private JButton boutonCopie;
 
 	/*------------------*/
 	/*   Constructeur   */
 	/*------------------*/
-	public PanelBarreEdition(FenetreParametres fenetreParametres)
+	public PanelModificationPlateau()
 	{
-		this.fenetreParametres = fenetreParametres;
-		this.setLayout(new FlowLayout(FlowLayout.LEFT));
+		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		this.setBorder(BorderFactory.createTitledBorder("Modification plateau"));
 
 		/*-------------------------*/
 		/* Creation des composants */
 		/*-------------------------*/
-		this.comboModeEdition  = new JComboBox<>();
-		this.comboTypeAtome    = new JComboBox<>();
-		this.comboCouleurBase  = new JComboBox<>(Couleur.values());
-		this.boutonOuvrir      = new JButton("Ouvrir");
-		this.boutonEnregistrer = new JButton("Enregistrer le plateau");
-		this.boutonCopie       = new JButton("Copie");
+		this.comboModeEdition = new JComboBox<>();
+		this.comboTypeAtome   = new JComboBox<>();
+		this.comboCouleurBase = new JComboBox<>(Couleur.values());
 
 		this.comboModeEdition.addItem("Dessiner une zone");
 		this.comboModeEdition.addItem("Placer un atome");
@@ -57,22 +53,13 @@ public class PanelBarreEdition extends JPanel implements ActionListener
 		/*----------------------*/
 		/* Ajout des composants */
 		/*----------------------*/
-		this.add(new JLabel("Mode"));
-		this.add(this.comboModeEdition);
-		this.add(new JLabel("Types d'atomes"));
-		this.add(this.comboTypeAtome);
-		this.add(new JLabel("Bases"));
-		this.add(this.comboCouleurBase);
-		this.add(this.boutonOuvrir);
-		this.add(this.boutonEnregistrer);
-		this.add(this.boutonCopie);
+		this.ajouterLigne("Mode", this.comboModeEdition);
+		this.ajouterLigne("Types d'atomes", this.comboTypeAtome);
+		this.ajouterLigne("Bases", this.comboCouleurBase);
 
 		/*-------------------------*/
 		/* Ajout des listeners     */
 		/*-------------------------*/
-		this.boutonOuvrir.addActionListener(this);
-		this.boutonEnregistrer.addActionListener(this);
-		this.boutonCopie.addActionListener(this);
 		this.comboModeEdition.addActionListener(this);
 		this.comboTypeAtome.addActionListener(this);
 		this.comboCouleurBase.addActionListener(this);
@@ -103,20 +90,9 @@ public class PanelBarreEdition extends JPanel implements ActionListener
 	/*----------*/
 	/* Methodes */
 	/*----------*/
+	// Oriente le mode selon le choix d'atome ou de base.
 	public void actionPerformed(ActionEvent e)
 	{
-		if (e.getSource() == this.boutonOuvrir)
-		{
-			this.fenetreParametres.traiterOuverture();
-		}
-		if (e.getSource() == this.boutonEnregistrer)
-		{
-			this.fenetreParametres.traiterEnregistrement();
-		}
-		if (e.getSource() == this.boutonCopie)
-		{
-			this.fenetreParametres.traiterEnregistrementCopie();
-		}
 		if (e.getSource() == this.comboTypeAtome)
 		{
 			this.selectionnerModeEdition("Placer un atome");
@@ -127,11 +103,29 @@ public class PanelBarreEdition extends JPanel implements ActionListener
 		}
 	}
 
+	// Force le mode associe au choix de l'utilisateur.
 	public void selectionnerModeEdition(String mode)
 	{
 		if (!mode.equals(this.getModeEditionChoisi()))
 		{
 			this.comboModeEdition.setSelectedItem(mode);
 		}
+	}
+
+	// Ajoute une ligne compacte avec le libelle a gauche et le champ a droite.
+	private void ajouterLigne(String libelle, java.awt.Component champ)
+	{
+		JPanel ligne = new JPanel(new BorderLayout(6, 0));
+		ligne.setOpaque(false);
+
+		JLabel label = new JLabel(libelle);
+		label.setPreferredSize(new Dimension(110, 24));
+		ligne.add(label, BorderLayout.WEST);
+		ligne.add(champ, BorderLayout.CENTER);
+
+		JPanel enveloppe = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 2));
+		enveloppe.setOpaque(false);
+		enveloppe.add(ligne);
+		this.add(enveloppe);
 	}
 }

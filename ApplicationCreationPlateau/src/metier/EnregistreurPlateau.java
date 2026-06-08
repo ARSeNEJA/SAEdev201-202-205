@@ -11,7 +11,7 @@ import metier.enums.TypeAtome;
 
 public class EnregistreurPlateau
 {
-	private static final String CHEMIN_FICHIER = "../PlateauData/plateau.txt";
+	private static final String CHEMIN_FICHIER = "../PlateauData/plateau.data";
 
 	public void ecrire(Plateau plateau) throws IOException
 	{
@@ -27,13 +27,15 @@ public class EnregistreurPlateau
 			dossier.mkdirs();
 		}
 
-		BufferedWriter writer = new BufferedWriter(new FileWriter(fichier));
-		this.ecrireParametres(writer, plateau);
-		this.ecrireTypes(writer, plateau);
-		this.ecrireCouleurs(writer, plateau);
-		this.ecrireZones(writer, plateau);
-		this.ecrireAtomes(writer, plateau);
-		writer.close();
+		// Ferme toujours le fichier meme si l'ecriture echoue.
+		try (BufferedWriter writer = new BufferedWriter(new FileWriter(fichier)))
+		{
+			this.ecrireParametres(writer, plateau);
+			this.ecrireTypes(writer, plateau);
+			this.ecrireCouleurs(writer, plateau);
+			this.ecrireZones(writer, plateau);
+			this.ecrireAtomes(writer, plateau);
+		}
 	}
 
 	private void ecrireParametres(BufferedWriter writer, Plateau plateau) throws IOException

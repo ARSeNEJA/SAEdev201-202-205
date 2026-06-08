@@ -2,17 +2,11 @@ package metier;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.util.List;
-
-import metier.enums.Couleur;
-import metier.enums.TypeAtome;
-import metier.enums.TypePioche;
 
 public class GestionPlateau
 {
 	private static final String CHEMIN_DOSSIER_PLATEAUX = "../PlateauData";
-	private static final String NOM_PLATEAU_DEFAUT = "plateau.txt";
+	private static final String NOM_PLATEAU_DEFAUT = "plateau.data";
 
 	private File fichierPlateauCourant;
 
@@ -21,86 +15,20 @@ public class GestionPlateau
 		this.fichierPlateauCourant = new File(CHEMIN_DOSSIER_PLATEAUX, NOM_PLATEAU_DEFAUT);
 	}
 
+	// Charge un plateau puis memorise son fichier comme fichier courant.
 	public Plateau lirePlateau(File fichier) throws IOException
 	{
-		Plateau plateauLu = null;
-		List<String> lignes = Files.readAllLines(fichier.toPath());
-		for (int i = 0; i < lignes.size(); i++)
+		if (!this.estFichierData(fichier))
 		{
-			String ligne = lignes.get(i).trim();
-			String[] valeurs = ligne.split(";");
-			try
-			{
-				if ("PARAMETRES".equals(valeurs[0]))
-				{
-					plateauLu = new Plateau(Integer.parseInt(valeurs[1].trim()), Integer.parseInt(valeurs[2].trim()),
-							Integer.parseInt(valeurs[3].trim()));
-					plateauLu.setTypePioche(TypePioche.valueOf(valeurs[4].trim()));
-				}
-				else if ("ZONE".equals(valeurs[0]))
-				{
-					if (plateauLu == null)
-						throw new IOException("PARAMETRES manquant.");
-					Zone zone = new Zone(Integer.parseInt(valeurs[1].trim()));
-					for (int j = 2; j + 1 < valeurs.length; j += 2)
-					{
-						int colonne = Integer.parseInt(valeurs[j].trim());
-						int ligneZone = Integer.parseInt(valeurs[j + 1].trim());
-						if (!plateauLu.caseExiste(colonne, ligneZone))
-							throw new IllegalArgumentException();
-						zone.ajouterCase(colonne, ligneZone);
-					}
-					plateauLu.getZones().add(zone);
-				}
-				else if ("ATOME".equals(valeurs[0]))
-				{
-					if (plateauLu == null)
-						throw new IOException("PARAMETRES manquant.");
-					int colonne = Integer.parseInt(valeurs[1].trim());
-					int ligneAtome = Integer.parseInt(valeurs[2].trim());
-					TypeAtome type = TypeAtome.valueOf(valeurs[3].trim());
-					Couleur couleurBase = this.lireCouleurBase(valeurs);
-
-					if (couleurBase != null)
-					{
-						if (!plateauLu.definirBase(colonne, ligneAtome, type, couleurBase))
-							throw new IllegalArgumentException();
-					}
-					else if (!plateauLu.ajouterAtome(colonne, ligneAtome, type))
-					{
-						throw new IllegalArgumentException();
-					}
-				}
-			}
-			catch (IllegalArgumentException | IndexOutOfBoundsException exception)
-			{
-				throw new IOException("ligne " + (i + 1) + " invalide.");
-			}
+			throw new IOException("Le fichier doit avoir l'extension .data.");
 		}
-		if (plateauLu == null)
-			throw new IOException("PARAMETRES manquant.");
-		plateauLu.calculerVoisinsAtomes();
+		LirePlateau lecteur = new LirePlateau();
+		Plateau plateauLu = lecteur.lire(fichier);
 		this.fichierPlateauCourant = fichier;
 		return plateauLu;
 	}
 
-	private Couleur lireCouleurBase(String[] valeurs)
-	{
-		if (valeurs.length < 5)
-		{
-			return null;
-		}
-		Couleur[] couleurs = Couleur.values();
-		for (int i = 0; i < couleurs.length; i++)
-		{
-			if (couleurs[i].name().equals(valeurs[4].trim()))
-			{
-				return couleurs[i];
-			}
-		}
-		return null;
-	}
-
+	// Cree le dossier des plateaux si besoin avant de le fournir.
 	public File getDossierPlateaux()
 	{
 		File dossier = new File(CHEMIN_DOSSIER_PLATEAUX);
@@ -121,18 +49,38 @@ public class GestionPlateau
 		return new File(this.getDossierPlateaux(), this.fichierPlateauCourant.getName());
 	}
 
-	public File ajouterExtensionTxt(File fichier)
+	// Ajoute ou remplace l'extension pour sauvegarder en .data.
+	public File ajouterExtensionData(File fichier)
 	{
-		if (fichier.getName().toLowerCase().endsWith(".txt"))
+		String nom = fichier.getName();
+		String nomMinuscule = nom.toLowerCase();
+
+		if (nomMinuscule.endsWith(".data"))
 		{
 			return fichier;
 		}
+
+		if (nomMinuscule.endsWith(".txt"))
+		{
+			nom = nom.substring(0, nom.length() - 4) + ".data";
+		}
+		else
+		{
+			nom = nom + ".data";
+		}
+
 		File dossier = fichier.getParentFile();
 		if (dossier == null)
 		{
-			return new File(fichier.getName() + ".txt");
+			return new File(nom);
 		}
-		return new File(dossier, fichier.getName() + ".txt");
+		return new File(dossier, nom);
+	}
+
+	// Verifie que le fichier choisi utilise l'extension .data.
+	public boolean estFichierData(File fichier)
+	{
+		return fichier != null && fichier.getName().toLowerCase().endsWith(".data");
 	}
 
 	public void enregistrerPlateau(Plateau plateau, int nombreZones) throws IOException
@@ -140,20 +88,23 @@ public class GestionPlateau
 		this.enregistrerPlateau(plateau, nombreZones, this.fichierPlateauCourant);
 	}
 
+	// Enregistre une copie dans le fichier choisi par l'utilisateur.
 	public void enregistrerCopiePlateau(Plateau plateau, int nombreZones, File fichier) throws IOException
 	{
-		File fichierCopie = this.ajouterExtensionTxt(fichier);
-		this.enregistrerPlateau(plateau, nombreZones, fichierCopie);
+		this.enregistrerPlateau(plateau, nombreZones, fichier);
 	}
 
+	// Valide puis ecrit le plateau dans le fichier cible.
 	public void enregistrerPlateau(Plateau plateau, int nombreZones, File fichier) throws IOException
 	{
+		File fichierData = this.ajouterExtensionData(fichier);
 		this.validerPlateauAvantEnregistrement(plateau, nombreZones);
 		EnregistreurPlateau enregistreur = new EnregistreurPlateau();
-		enregistreur.ecrire(plateau, fichier);
-		this.fichierPlateauCourant = fichier;
+		enregistreur.ecrire(plateau, fichierData);
+		this.fichierPlateauCourant = fichierData;
 	}
 
+	// Controle les erreurs bloquantes avant une sauvegarde.
 	public void validerPlateauAvantEnregistrement(Plateau plateau, int nombreZones)
 	{
 		if (plateau.getAtomes().isEmpty())

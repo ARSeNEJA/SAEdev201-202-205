@@ -1,4 +1,4 @@
-import ihm.FenetreParametres;
+import ihm.Fenetre;
 import metier.Plateau;
 
 public class Controleur
@@ -7,7 +7,7 @@ public class Controleur
 	{
 		Plateau plateau = new Plateau(10, 8, 50);
 		plateau.verifierNombreZones(4);
-		new FenetreParametres(plateau);
+		new Fenetre(plateau);
 	}
 
 	/*---------*/

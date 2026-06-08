@@ -5,10 +5,9 @@ import java.awt.Dimension;
 import java.io.File;
 import java.io.IOException;
 
-import javax.swing.ImageIcon;
+import javax.swing.BoxLayout;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -17,7 +16,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import metier.GestionPlateau;
 import metier.Plateau;
 
-public class FenetreParametres extends JFrame
+public class Fenetre extends JFrame
 {
 	/*--------------------*/
 	/*      Attributs     */
@@ -25,46 +24,46 @@ public class FenetreParametres extends JFrame
 	private Plateau plateau;
 	private GestionPlateau gestionPlateau;
 	private PanelParametres panelParametres;
-	private PanelBarreEdition panelBarreEdition;
+	private PanelModificationPlateau panelModificationPlateau;
+	private PanelAutres panelAutres;
 	private PanelPlateau panelEditeur;
 
 	/*--------------------*/
 	/*    Constructeur    */
 	/*--------------------*/
-	public FenetreParametres(Plateau plateau)
+	public Fenetre(Plateau plateau)
 	{
 		this.plateau     = plateau;
 		this.gestionPlateau = new GestionPlateau();
 
 		this.setTitle("Creation du plateau");
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-		JLabel fond = new JLabel(new ImageIcon("images/fond_microscope.png"));
-		fond.setLayout(new BorderLayout(10, 10));
-		this.setContentPane(fond);
+		this.setContentPane(new JPanel(new BorderLayout(10, 10)));
 
 		/*-------------------------*/
 		/* Creation des composants */
 		/*-------------------------*/
-		this.panelBarreEdition = new PanelBarreEdition(this);
-		this.panelEditeur      = new PanelPlateau(plateau, this);
-		this.panelParametres   = new PanelParametres(plateau, this.panelEditeur, this);
-		this.panelBarreEdition.setOpaque(false);
-		this.panelParametres.setOpaque(false);
+		this.panelModificationPlateau = new PanelModificationPlateau();
+		this.panelAutres              = new PanelAutres(this);
+		this.panelEditeur             = new PanelPlateau(plateau, this);
+		this.panelParametres          = new PanelParametres(plateau, this);
 
-		JPanel panelCentre = new JPanel(new BorderLayout());
+		JPanel panelGauche = new JPanel();
+		panelGauche.setLayout(new BoxLayout(panelGauche, BoxLayout.Y_AXIS));
+		panelGauche.setOpaque(false);
+		panelGauche.add(this.panelParametres);
+		panelGauche.add(this.panelModificationPlateau);
+		panelGauche.add(this.panelAutres);
+
 		JScrollPane scrollEditeur = new JScrollPane(this.panelEditeur);
 		scrollEditeur.setPreferredSize(new Dimension(620, 560));
-		panelCentre.setOpaque(false);
 		scrollEditeur.setOpaque(false);
-		panelCentre.add(this.panelBarreEdition, BorderLayout.NORTH);
-		panelCentre.add(scrollEditeur, BorderLayout.CENTER);
 
 		/*----------------------*/
 		/* Ajout des composants */
 		/*----------------------*/
-		this.add(this.panelParametres, BorderLayout.WEST);
-		this.add(panelCentre, BorderLayout.CENTER);
+		this.add(panelGauche, BorderLayout.WEST);
+		this.add(scrollEditeur, BorderLayout.CENTER);
 
 		this.pack();
 		this.setLocationRelativeTo(null);
@@ -79,9 +78,9 @@ public class FenetreParametres extends JFrame
 		return this.panelParametres;
 	}
 
-	public PanelBarreEdition getPanelBarreEdition()
+	public PanelModificationPlateau getPanelModificationPlateau()
 	{
-		return this.panelBarreEdition;
+		return this.panelModificationPlateau;
 	}
 
 	public Plateau getPlateau()
@@ -135,6 +134,7 @@ public class FenetreParametres extends JFrame
 		this.enregistrerCopie(fichier);
 	}
 
+	// Applique les valeurs des champs au plateau avant affichage ou sauvegarde.
 	public boolean appliquerParametresPlateau()
 	{
 		int largeur;
@@ -169,6 +169,7 @@ public class FenetreParametres extends JFrame
 		return true;
 	}
 
+	// Enregistre dans le fichier courant apres validation metier.
 	private void enregistrerPlateauCourant()
 	{
 		try
@@ -184,6 +185,7 @@ public class FenetreParametres extends JFrame
 		}
 	}
 
+	// Enregistre le plateau dans un autre fichier choisi par l'utilisateur.
 	private void enregistrerCopie(File fichier)
 	{
 		try
@@ -209,18 +211,18 @@ public class FenetreParametres extends JFrame
 	{
 		this.panelEditeur.setPlateau(plateau);
 		this.panelParametres.chargerPlateau(plateau, nombreZones);
-		this.panelEditeur.actualiserChoixEdition(this.panelBarreEdition.getModeEditionChoisi(),
-				this.panelParametres.getZoneActive(), this.panelBarreEdition.getTypeAtomeChoisi(),
-				this.panelBarreEdition.getCouleurBaseChoisie());
+		this.panelEditeur.actualiserChoixEdition(this.panelModificationPlateau.getModeEditionChoisi(),
+				this.panelParametres.getZoneActive(), this.panelModificationPlateau.getTypeAtomeChoisi(),
+				this.panelModificationPlateau.getCouleurBaseChoisie());
 		this.selectionnerModeEdition("Dessiner une zone");
 		this.panelEditeur.repaint();
 	}
 
 	public void selectionnerModeEdition(String mode)
 	{
-		if (!mode.equals(this.panelBarreEdition.getModeEditionChoisi()))
+		if (!mode.equals(this.panelModificationPlateau.getModeEditionChoisi()))
 		{
-			this.panelBarreEdition.selectionnerModeEdition(mode);
+			this.panelModificationPlateau.selectionnerModeEdition(mode);
 		}
 	}
 
@@ -228,13 +230,20 @@ public class FenetreParametres extends JFrame
 	{
 		JFileChooser choixFichier = new JFileChooser(dossier);
 		choixFichier.setDialogTitle("Ouvrir un plateau");
-		choixFichier.setFileFilter(new FileNameExtensionFilter("Fichiers texte (*.txt)", "txt"));
+		choixFichier.setFileFilter(new FileNameExtensionFilter("Fichiers plateau (*.data)", "data"));
+		choixFichier.setAcceptAllFileFilterUsed(false);
 
 		if (choixFichier.showOpenDialog(this) != JFileChooser.APPROVE_OPTION)
 		{
 			return null;
 		}
-		return choixFichier.getSelectedFile();
+		File fichier = choixFichier.getSelectedFile();
+		if (!this.gestionPlateau.estFichierData(fichier))
+		{
+			this.afficherMessage("Choisissez un fichier .data.");
+			return null;
+		}
+		return fichier;
 	}
 
 	private File choisirFichierCopie(File dossier)
@@ -246,7 +255,8 @@ public class FenetreParametres extends JFrame
 
 		JFileChooser choixFichier = new JFileChooser(dossier);
 		choixFichier.setDialogTitle("Creer une copie du plateau");
-		choixFichier.setFileFilter(new FileNameExtensionFilter("Fichiers texte (*.txt)", "txt"));
+		choixFichier.setFileFilter(new FileNameExtensionFilter("Fichiers plateau (*.data)", "data"));
+		choixFichier.setAcceptAllFileFilterUsed(false);
 		choixFichier.setSelectedFile(this.gestionPlateau.getFichierCopiePropose());
 
 		if (choixFichier.showSaveDialog(this) != JFileChooser.APPROVE_OPTION)
@@ -254,7 +264,7 @@ public class FenetreParametres extends JFrame
 			return null;
 		}
 
-		File fichier = this.gestionPlateau.ajouterExtensionTxt(choixFichier.getSelectedFile());
+		File fichier = this.gestionPlateau.ajouterExtensionData(choixFichier.getSelectedFile());
 		if (fichier.exists())
 		{
 			int confirmation = JOptionPane.showConfirmDialog(this,
