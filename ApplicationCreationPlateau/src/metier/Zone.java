@@ -2,15 +2,12 @@ package metier;
 
 import java.util.ArrayList;
 
-import metier.enums.Couleur;
-
 public class Zone
 {
 	/*-------------------- */
 	/*      Attributs      */
 	/*-------------------- */
 	private int id;
-	private Couleur couleur;
 	private ArrayList<Case> cases;
 
 	/*---------------------*/
@@ -19,7 +16,6 @@ public class Zone
 	public Zone(int id)
 	{
 		this.id = id;
-		this.couleur = null;
 		this.cases = new ArrayList<Case>();
 	}
 
@@ -34,16 +30,6 @@ public class Zone
 	public ArrayList<Case> getCases()
 	{
 		return this.cases;
-	}
-
-	public Couleur getCouleur()
-	{
-		return this.couleur;
-	}
-
-	public void setCouleur(Couleur couleur)
-	{
-		this.couleur = couleur;
 	}
 
 	/*-------------------- */

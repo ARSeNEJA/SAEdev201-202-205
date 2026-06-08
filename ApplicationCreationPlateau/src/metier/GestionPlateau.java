@@ -11,6 +11,16 @@ import metier.enums.TypePioche;
 
 public class GestionPlateau
 {
+	private static final String CHEMIN_DOSSIER_PLATEAUX = "../PlateauData";
+	private static final String NOM_PLATEAU_DEFAUT = "plateau.txt";
+
+	private File fichierPlateauCourant;
+
+	public GestionPlateau()
+	{
+		this.fichierPlateauCourant = new File(CHEMIN_DOSSIER_PLATEAUX, NOM_PLATEAU_DEFAUT);
+	}
+
 	public Plateau lirePlateau(File fichier) throws IOException
 	{
 		Plateau plateauLu = null;
@@ -62,7 +72,7 @@ public class GestionPlateau
 					}
 				}
 			}
-			catch (RuntimeException exception)
+			catch (IllegalArgumentException | IndexOutOfBoundsException exception)
 			{
 				throw new IOException("ligne " + (i + 1) + " invalide.");
 			}
@@ -70,6 +80,7 @@ public class GestionPlateau
 		if (plateauLu == null)
 			throw new IOException("PARAMETRES manquant.");
 		plateauLu.calculerVoisinsAtomes();
+		this.fichierPlateauCourant = fichier;
 		return plateauLu;
 	}
 
@@ -79,50 +90,96 @@ public class GestionPlateau
 		{
 			return null;
 		}
-		try
+		Couleur[] couleurs = Couleur.values();
+		for (int i = 0; i < couleurs.length; i++)
 		{
-			return Couleur.valueOf(valeurs[4].trim());
+			if (couleurs[i].name().equals(valeurs[4].trim()))
+			{
+				return couleurs[i];
+			}
 		}
-		catch (IllegalArgumentException exception)
+		return null;
+	}
+
+	public File getDossierPlateaux()
+	{
+		File dossier = new File(CHEMIN_DOSSIER_PLATEAUX);
+		if (!dossier.exists())
 		{
-			return null;
+			dossier.mkdirs();
 		}
+		return dossier;
+	}
+
+	public File getFichierPlateauCourant()
+	{
+		return this.fichierPlateauCourant;
+	}
+
+	public File getFichierCopiePropose()
+	{
+		return new File(this.getDossierPlateaux(), this.fichierPlateauCourant.getName());
+	}
+
+	public File ajouterExtensionTxt(File fichier)
+	{
+		if (fichier.getName().toLowerCase().endsWith(".txt"))
+		{
+			return fichier;
+		}
+		File dossier = fichier.getParentFile();
+		if (dossier == null)
+		{
+			return new File(fichier.getName() + ".txt");
+		}
+		return new File(dossier, fichier.getName() + ".txt");
 	}
 
 	public void enregistrerPlateau(Plateau plateau, int nombreZones) throws IOException
 	{
-		this.enregistrerPlateau(plateau, nombreZones, new File("../PlateauData/plateau.txt"));
+		this.enregistrerPlateau(plateau, nombreZones, this.fichierPlateauCourant);
+	}
+
+	public void enregistrerCopiePlateau(Plateau plateau, int nombreZones, File fichier) throws IOException
+	{
+		File fichierCopie = this.ajouterExtensionTxt(fichier);
+		this.enregistrerPlateau(plateau, nombreZones, fichierCopie);
 	}
 
 	public void enregistrerPlateau(Plateau plateau, int nombreZones, File fichier) throws IOException
 	{
+		this.validerPlateauAvantEnregistrement(plateau, nombreZones);
+		EnregistreurPlateau enregistreur = new EnregistreurPlateau();
+		enregistreur.ecrire(plateau, fichier);
+		this.fichierPlateauCourant = fichier;
+	}
+
+	public void validerPlateauAvantEnregistrement(Plateau plateau, int nombreZones)
+	{
 		if (plateau.getAtomes().isEmpty())
 		{
-			throw new IOException("Placez au moins un atome avant d'enregistrer.");
+			throw new IllegalArgumentException("Placez au moins un atome avant d'enregistrer.");
 		}
 		if (!plateau.toutesCasesOntUneZone())
 		{
-			throw new IOException("Toutes les cases du plateau doivent appartenir a une zone.");
+			throw new IllegalArgumentException("Toutes les cases du plateau doivent appartenir a une zone.");
 		}
 		if (!plateau.toutesZonesOntDesCases(nombreZones))
 		{
-			throw new IOException("Chaque zone doit contenir au moins une case.");
+			throw new IllegalArgumentException("Chaque zone doit contenir au moins une case.");
 		}
 		Zone zoneSeparee = plateau.getZoneSeparee(nombreZones);
 		if (zoneSeparee != null)
 		{
-			throw new IOException("La zone " + zoneSeparee.getId() +
+			throw new IllegalArgumentException("La zone " + zoneSeparee.getId() +
 					" est separee en plusieurs morceaux.");
 		}
 
-		plateau.calculerVoisinsAtomes();
 		Atome atomeIsole = plateau.getAtomeIsole();
 		if (atomeIsole != null)
 		{
-			throw new IOException("L'atome en colonne " + atomeIsole.getPosition().getColonne() +
+			throw new IllegalArgumentException("L'atome en colonne " + atomeIsole.getPosition().getColonne() +
 					", ligne " + atomeIsole.getPosition().getLigne() + " est isole.");
 		}
-		EnregistreurPlateau enregistreur = new EnregistreurPlateau();
-		enregistreur.ecrire(plateau, fichier);
 	}
 }

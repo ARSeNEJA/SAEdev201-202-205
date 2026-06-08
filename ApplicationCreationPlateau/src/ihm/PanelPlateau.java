@@ -272,17 +272,9 @@ public class PanelPlateau extends JPanel implements ActionListener
 		for (int i = 0; i < zones.size(); i++)
 		{
 			Zone zone = zones.get(i);
-			if (zone.getCouleur() != null)
-			{
-				Color couleur = this.getCouleur(zone.getCouleur());
-				g.setColor(new Color(couleur.getRed(), couleur.getGreen(), couleur.getBlue(), 115));
-			}
-			else
-			{
-				int indexCouleur = zone.getId() - 1;
-				if (indexCouleur < 0) {indexCouleur = 0;}
-				g.setColor(COULEURS_ZONES[indexCouleur % COULEURS_ZONES.length]);
-			}
+			int indexCouleur = zone.getId() - 1;
+			if (indexCouleur < 0) {indexCouleur = 0;}
+			g.setColor(COULEURS_ZONES[indexCouleur % COULEURS_ZONES.length]);
 			ArrayList<Case> cases = zone.getCases();
 			for (int j = 0; j < cases.size(); j++)
 			{

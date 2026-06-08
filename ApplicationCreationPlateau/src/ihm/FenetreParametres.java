@@ -27,7 +27,6 @@ public class FenetreParametres extends JFrame
 	private PanelParametres panelParametres;
 	private PanelBarreEdition panelBarreEdition;
 	private PanelPlateau panelEditeur;
-	private File fichierPlateauCourant;
 
 	/*--------------------*/
 	/*    Constructeur    */
@@ -36,7 +35,6 @@ public class FenetreParametres extends JFrame
 	{
 		this.plateau     = plateau;
 		this.gestionPlateau = new GestionPlateau();
-		this.fichierPlateauCourant = new File("../PlateauData/plateau.txt");
 
 		this.setTitle("Creation du plateau");
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -96,7 +94,7 @@ public class FenetreParametres extends JFrame
 	/*---------------------*/
 	public void traiterOuverture()
 	{
-		File fichier = this.choisirFichierPlateau(new File("../PlateauData"));
+		File fichier = this.choisirFichierPlateau(this.gestionPlateau.getDossierPlateaux());
 		if (fichier == null)
 		{
 			return;
@@ -104,7 +102,6 @@ public class FenetreParametres extends JFrame
 		try
 		{
 			this.plateau = this.gestionPlateau.lirePlateau(fichier);
-			this.fichierPlateauCourant = fichier;
 			this.chargerPlateauOuvert(this.plateau, this.plateau.calculerNombreZones());
 		}
 		catch (IOException exception)
@@ -120,7 +117,7 @@ public class FenetreParametres extends JFrame
 			return;
 		}
 
-		this.enregistrerDansFichier(this.fichierPlateauCourant);
+		this.enregistrerPlateauCourant();
 	}
 
 	public void traiterEnregistrementCopie()
@@ -130,12 +127,12 @@ public class FenetreParametres extends JFrame
 			return;
 		}
 
-		File fichier = this.choisirFichierCopie(new File("../PlateauData"));
+		File fichier = this.choisirFichierCopie(this.gestionPlateau.getDossierPlateaux());
 		if (fichier == null)
 		{
 			return;
 		}
-		this.enregistrerDansFichier(fichier);
+		this.enregistrerCopie(fichier);
 	}
 
 	public boolean appliquerParametresPlateau()
@@ -172,16 +169,32 @@ public class FenetreParametres extends JFrame
 		return true;
 	}
 
-	private void enregistrerDansFichier(File fichier)
+	private void enregistrerPlateauCourant()
 	{
 		try
 		{
-			this.gestionPlateau.enregistrerPlateau(this.plateau,
+			this.gestionPlateau.enregistrerPlateau(this.plateau, this.panelParametres.getNombreZonesChoisi());
+			this.afficherMessage(
+					"Le plateau a ete enregistre dans " +
+					this.gestionPlateau.getFichierPlateauCourant().getName() + ".");
+		}
+		catch (IOException | IllegalArgumentException exception)
+		{
+			this.afficherMessage("Enregistrement impossible : " + exception.getMessage());
+		}
+	}
+
+	private void enregistrerCopie(File fichier)
+	{
+		try
+		{
+			this.gestionPlateau.enregistrerCopiePlateau(this.plateau,
 					this.panelParametres.getNombreZonesChoisi(), fichier);
 			this.afficherMessage(
-					"Le plateau a ete enregistre dans " + fichier.getName() + ".");
+					"Le plateau a ete enregistre dans " +
+					this.gestionPlateau.getFichierPlateauCourant().getName() + ".");
 		}
-		catch (IOException exception)
+		catch (IOException | IllegalArgumentException exception)
 		{
 			this.afficherMessage("Enregistrement impossible : " + exception.getMessage());
 		}
@@ -234,14 +247,14 @@ public class FenetreParametres extends JFrame
 		JFileChooser choixFichier = new JFileChooser(dossier);
 		choixFichier.setDialogTitle("Creer une copie du plateau");
 		choixFichier.setFileFilter(new FileNameExtensionFilter("Fichiers texte (*.txt)", "txt"));
-		choixFichier.setSelectedFile(new File(dossier, this.fichierPlateauCourant.getName()));
+		choixFichier.setSelectedFile(this.gestionPlateau.getFichierCopiePropose());
 
 		if (choixFichier.showSaveDialog(this) != JFileChooser.APPROVE_OPTION)
 		{
 			return null;
 		}
 
-		File fichier = this.ajouterExtensionTxt(choixFichier.getSelectedFile());
+		File fichier = this.gestionPlateau.ajouterExtensionTxt(choixFichier.getSelectedFile());
 		if (fichier.exists())
 		{
 			int confirmation = JOptionPane.showConfirmDialog(this,
@@ -254,20 +267,6 @@ public class FenetreParametres extends JFrame
 			}
 		}
 		return fichier;
-	}
-
-	private File ajouterExtensionTxt(File fichier)
-	{
-		if (fichier.getName().toLowerCase().endsWith(".txt"))
-		{
-			return fichier;
-		}
-		File dossier = fichier.getParentFile();
-		if (dossier == null)
-		{
-			return new File(fichier.getName() + ".txt");
-		}
-		return new File(dossier, fichier.getName() + ".txt");
 	}
 
 	public void afficherMessage(String message)
