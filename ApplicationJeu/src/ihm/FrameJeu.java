@@ -1,6 +1,6 @@
 package src.ihm;
 
-import src.Controleur;
+import src.ControleurJeu;
 
 import javax.swing.*;
 import java.awt.Toolkit.*;
@@ -12,7 +12,7 @@ public class FrameJeu extends JFrame
 	private Dimension tailleEcran;
 	private int ecranX, ecranY;
 
-	public FrameJeu ( Controleur ctrl )
+	public FrameJeu ( ControleurJeu ctrl )
 	{
 		tailleEcran = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
 		
@@ -38,9 +38,9 @@ public class FrameJeu extends JFrame
 	//
 	private class FermetureFenetre extends WindowAdapter
 	{
-		private Controleur ctrl;
+		private ControleurJeu ctrl;
 		
-		public FermetureFenetre(Controleur ctrl)
+		public FermetureFenetre(ControleurJeu ctrl)
 		{
 			this.ctrl = ctrl;
 		}
