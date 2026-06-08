@@ -1,6 +1,6 @@
 package src.ihm;
 
-import src.Controleur;
+import src.ControleurJeu;
 
 import java.awt.*;
 import javax.swing.*;
@@ -11,7 +11,7 @@ public class PanelJeu extends JPanel
 	private JPanel panelPlateau;
 	private JPanel panelInformation;
 
-	public PanelJeu( Controleur ctrl )
+	public PanelJeu( ControleurJeu ctrl )
 	{
 		//this.add(new JLabel("Test 1"));
 
