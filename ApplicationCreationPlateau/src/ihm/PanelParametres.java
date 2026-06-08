@@ -1,9 +1,9 @@
 package ihm;
 
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.BorderFactory;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -12,7 +12,8 @@ import javax.swing.JTextField;
 import metier.Plateau;
 import metier.enums.TypePioche;
 
-public class PanelParametres extends JPanel
+
+public class PanelParametres extends JPanel implements ActionListener
 {
 	private JTextField champLargeur;
 	private JTextField champHauteur;
@@ -21,10 +22,9 @@ public class PanelParametres extends JPanel
 	private JComboBox<Integer> comboZoneActive;
 	private JComboBox<TypePioche> comboPioche;
 
-	public PanelParametres(Plateau plateau)
+	public PanelParametres(Plateau plateau, PanelPlateau panelEditeur)
 	{
-		super(new GridLayout(0, 1, 6, 6));
-		this.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 4));
+		this.setLayout(new GridLayout(0, 1, 6, 6));
 
 		/*-------------------------*/
 		/* Creation des composants */
@@ -42,7 +42,13 @@ public class PanelParametres extends JPanel
 
 		this.comboZoneActive = new JComboBox<>();
 		this.comboPioche = new JComboBox<>(TypePioche.values());
-		this.comboNombreZones.addActionListener(e -> this.actualiserZonesActives());
+
+		this.comboNombreZones.addActionListener(this);
+		this.champLargeur.addActionListener(this);
+		this.champHauteur.addActionListener(this);
+		this.champTailleCase.addActionListener(this);
+		this.comboZoneActive.addActionListener(this);
+		this.comboPioche.addActionListener(this);
 
 		/*----------------------*/
 		/* Ajout des composants */
@@ -60,34 +66,60 @@ public class PanelParametres extends JPanel
 		this.add(new JLabel("Type de pioche"));
 		this.add(this.comboPioche);
 
-		this.actualiserZonesActives();
+		this.remplirZonesActives();
 	}
 
-	public void setActionCommandParametres(String actionCommand)
+	/*------------------*/
+	/*     Getters      */
+	/*------------------*/
+	public int getLargeurChoisie() {return Integer.parseInt(this.champLargeur.getText().trim());}
+	public int getHauteurChoisie() {return Integer.parseInt(this.champHauteur.getText().trim());}
+	public int getTailleCaseChoisie() {return Integer.parseInt(this.champTailleCase.getText().trim());}
+	public TypePioche getTypePiocheChoisi() {return (TypePioche) this.comboPioche.getSelectedItem();}
+
+	public int getNombreZonesChoisi()
 	{
-		this.champLargeur.setActionCommand(actionCommand);
-		this.champHauteur.setActionCommand(actionCommand);
-		this.champTailleCase.setActionCommand(actionCommand);
-		this.comboNombreZones.setActionCommand(actionCommand);
-		this.comboPioche.setActionCommand(actionCommand);
+		Integer valeur = (Integer) this.comboNombreZones.getSelectedItem();
+		if (valeur == null)
+		{
+			return 1;
+		}
+		return valeur;
 	}
 
-	public void setActionCommandZoneActive(String actionCommand)
+	public int getZoneActive()
 	{
-		this.comboZoneActive.setActionCommand(actionCommand);
+		Integer valeur = (Integer) this.comboZoneActive.getSelectedItem();
+		if (valeur == null)
+		{
+			return 1;
+		}
+		return valeur;
 	}
 
-	public void ajouterListeners(ActionListener actionListener)
+	/*------------------*/
+	/*   Methode        */
+	/*------------------*/
+	
+	public void actionPerformed(ActionEvent e)
 	{
-		this.champLargeur.addActionListener(actionListener);
-		this.champHauteur.addActionListener(actionListener);
-		this.champTailleCase.addActionListener(actionListener);
-		this.comboNombreZones.addActionListener(actionListener);
-		this.comboZoneActive.addActionListener(actionListener);
-		this.comboPioche.addActionListener(actionListener);
+		if (e.getSource() == this.comboNombreZones)
+		{
+			this.remplirZonesActives();
+		}
 	}
 
-	private void actualiserZonesActives()
+	public void chargerPlateau(Plateau plateau, int nombreZones)
+	{
+		this.champLargeur.setText(String.valueOf(plateau.getLargeur()));
+		this.champHauteur.setText(String.valueOf(plateau.getHauteur()));
+		this.champTailleCase.setText(String.valueOf(plateau.getTailleCase()));
+		this.comboNombreZones.setSelectedItem(nombreZones);
+		this.comboPioche.setSelectedItem(plateau.getTypePioche());
+		this.remplirZonesActives();
+	}
+
+	private void remplirZonesActives()
 	{
 		int nombreZones = this.getNombreZonesChoisi();
 		int zoneActive = this.getZoneActive();
@@ -107,45 +139,5 @@ public class PanelParametres extends JPanel
 		}
 	}
 
-	public ParametresPlateau getParametresPlateau()
-	{
-		return new ParametresPlateau(
-				this.lireEntier(this.champLargeur.getText()),
-				this.lireEntier(this.champHauteur.getText()),
-				this.lireEntier(this.champTailleCase.getText()),
-				this.getNombreZonesChoisi(),
-				(TypePioche) this.comboPioche.getSelectedItem());
-	}
 
-	private int getNombreZonesChoisi()
-	{
-		Integer valeur = (Integer) this.comboNombreZones.getSelectedItem();
-		if (valeur == null)
-		{
-			return 1;
-		}
-		return valeur.intValue();
-	}
-
-	public int getZoneActive()
-	{
-		Integer valeur = (Integer) this.comboZoneActive.getSelectedItem();
-		if (valeur == null)
-		{
-			return 1;
-		}
-		return valeur.intValue();
-	}
-
-	private int lireEntier(String texte)
-	{
-		try
-		{
-			return Integer.parseInt(texte.trim());
-		}
-		catch (NumberFormatException exception)
-		{
-			return -1;
-		}
-	}
 }
