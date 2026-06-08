@@ -69,6 +69,25 @@ public class Zone
 		}
 	}
 
+	public boolean peutAjouterCaseVoisine(int colonne, int ligne)
+	{
+		if (this.cases.isEmpty() || this.contientCase(colonne, ligne))
+		{
+			return true;
+		}
+		for (int i = 0; i < this.cases.size(); i++)
+		{
+			Case caseZone = this.cases.get(i);
+			int ecartColonne = Math.abs(caseZone.getColonne() - colonne);
+			int ecartLigne = Math.abs(caseZone.getLigne() - ligne);
+			if (ecartColonne + ecartLigne == 1)
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+
 	public void supprimerCase(int colonne, int ligne)
 	{
 		int i = 0;

@@ -1,7 +1,7 @@
-./Controleur.java
+ApplicationJeu/src/ControleurJeu.java
 
-./ihm/FrameJeu.java
-./ihm/PanelJeu.java
+ApplicationJeu/src/ihm/FrameJeu.java
+ApplicationJeu/src/ihm/PanelJeu.java
 
-./ihm/FrameFermeture.java
-./ihm/PanelFermeture.java
+ApplicationJeu/src/ihm/FrameFermeture.java
+ApplicationJeu/src/ihm/PanelFermeture.java

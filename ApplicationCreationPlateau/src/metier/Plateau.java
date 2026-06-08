@@ -195,6 +195,22 @@ public class Plateau
 		}
 	}
 
+	public boolean affecterCaseZone(int colonne, int ligne, int idZone)
+	{
+		if (!this.caseExiste(colonne, ligne))
+		{
+			return false;
+		}
+		Zone zone = this.getZoneParId(idZone);
+		if (zone == null || !zone.peutAjouterCaseVoisine(colonne, ligne))
+		{
+			return false;
+		}
+		this.retirerCaseDesZones(colonne, ligne);
+		zone.ajouterCase(colonne, ligne);
+		return true;
+	}
+
 	public boolean toutesZonesOntDesCases(int nombreZones)
 	{
 		int id = 1;
@@ -225,6 +241,20 @@ public class Plateau
 		return true;
 	}
 
+	public Atome getAtomeIsole()
+	{
+		this.calculerVoisinsAtomes();
+		for (int i = 0; i < this.atomes.size(); i++)
+		{
+			Atome atome = this.atomes.get(i);
+			if (atome.getVoisins().isEmpty())
+			{
+				return atome;
+			}
+		}
+		return null;
+	}
+
 	public boolean ajouterAtome(int colonne, int ligne, TypeAtome type)
 	{
 		if (!this.caseExiste(colonne, ligne) || type == null)
@@ -246,14 +276,6 @@ public class Plateau
 		if (atome == null)
 		{
 			return null;
-		}
-		if (atome.estBase())
-		{
-			Zone zone = this.getZoneAtome(atome);
-			if (zone != null)
-			{
-				zone.setCouleur(null);
-			}
 		}
 		this.atomes.remove(atome);
 		this.calculerVoisinsAtomes();
@@ -294,11 +316,6 @@ public class Plateau
 			return false;
 		}
 
-		Zone zone = this.getZoneAtome(atome);
-		if (zone != null)
-		{
-			zone.setCouleur(couleur);
-		}
 		return true;
 	}
 

@@ -91,6 +91,11 @@ public class GestionPlateau
 
 	public void enregistrerPlateau(Plateau plateau, int nombreZones) throws IOException
 	{
+		this.enregistrerPlateau(plateau, nombreZones, new File("../PlateauData/plateau.txt"));
+	}
+
+	public void enregistrerPlateau(Plateau plateau, int nombreZones, File fichier) throws IOException
+	{
 		if (plateau.getAtomes().isEmpty())
 		{
 			throw new IOException("Placez au moins un atome avant d'enregistrer.");
@@ -105,7 +110,13 @@ public class GestionPlateau
 		}
 
 		plateau.calculerVoisinsAtomes();
+		Atome atomeIsole = plateau.getAtomeIsole();
+		if (atomeIsole != null)
+		{
+			throw new IOException("L'atome en colonne " + atomeIsole.getPosition().getColonne() +
+					", ligne " + atomeIsole.getPosition().getLigne() + " est isole.");
+		}
 		EnregistreurPlateau enregistreur = new EnregistreurPlateau();
-		enregistreur.ecrire(plateau);
+		enregistreur.ecrire(plateau, fichier);
 	}
 }

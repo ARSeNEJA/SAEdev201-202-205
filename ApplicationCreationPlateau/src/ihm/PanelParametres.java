@@ -4,6 +4,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -15,15 +16,22 @@ import metier.enums.TypePioche;
 
 public class PanelParametres extends JPanel implements ActionListener
 {
+	private FenetreParametres fenetreParametres;
+	private Plateau plateau;
+	private PanelPlateau panelEditeur;
 	private JTextField champLargeur;
 	private JTextField champHauteur;
 	private JTextField champTailleCase;
 	private JComboBox<Integer> comboNombreZones;
 	private JComboBox<Integer> comboZoneActive;
 	private JComboBox<TypePioche> comboPioche;
+	private JButton boutonAppliquerParametres;
 
-	public PanelParametres(Plateau plateau, PanelPlateau panelEditeur)
+	public PanelParametres(Plateau plateau, PanelPlateau panelEditeur, FenetreParametres fenetreParametres)
 	{
+		this.fenetreParametres = fenetreParametres;
+		this.plateau = plateau;
+		this.panelEditeur = panelEditeur;
 		this.setLayout(new GridLayout(0, 1, 6, 6));
 
 		/*-------------------------*/
@@ -42,6 +50,7 @@ public class PanelParametres extends JPanel implements ActionListener
 
 		this.comboZoneActive = new JComboBox<>();
 		this.comboPioche = new JComboBox<>(TypePioche.values());
+		this.boutonAppliquerParametres = new JButton("Appliquer les parametres");
 
 		this.comboNombreZones.addActionListener(this);
 		this.champLargeur.addActionListener(this);
@@ -49,6 +58,7 @@ public class PanelParametres extends JPanel implements ActionListener
 		this.champTailleCase.addActionListener(this);
 		this.comboZoneActive.addActionListener(this);
 		this.comboPioche.addActionListener(this);
+		this.boutonAppliquerParametres.addActionListener(this);
 
 		/*----------------------*/
 		/* Ajout des composants */
@@ -65,6 +75,7 @@ public class PanelParametres extends JPanel implements ActionListener
 		this.add(this.comboZoneActive);
 		this.add(new JLabel("Type de pioche"));
 		this.add(this.comboPioche);
+		this.add(this.boutonAppliquerParametres);
 
 		this.remplirZonesActives();
 	}
@@ -107,10 +118,15 @@ public class PanelParametres extends JPanel implements ActionListener
 		{
 			this.remplirZonesActives();
 		}
+		if (e.getSource() == this.boutonAppliquerParametres)
+		{
+			this.fenetreParametres.appliquerParametresPlateau();
+		}
 	}
 
 	public void chargerPlateau(Plateau plateau, int nombreZones)
 	{
+		this.plateau = plateau;
 		this.champLargeur.setText(String.valueOf(plateau.getLargeur()));
 		this.champHauteur.setText(String.valueOf(plateau.getHauteur()));
 		this.champTailleCase.setText(String.valueOf(plateau.getTailleCase()));

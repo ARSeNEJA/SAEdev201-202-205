@@ -16,6 +16,11 @@ public class EnregistreurPlateau
 	public void ecrire(Plateau plateau) throws IOException
 	{
 		File fichier = new File(CHEMIN_FICHIER);
+		this.ecrire(plateau, fichier);
+	}
+
+	public void ecrire(Plateau plateau, File fichier) throws IOException
+	{
 		File dossier = fichier.getParentFile();
 		if (dossier != null && !dossier.exists())
 		{
@@ -106,6 +111,11 @@ public class EnregistreurPlateau
 			writer.write(String.valueOf(atome.getPosition().getLigne()));
 			writer.write(";");
 			writer.write(atome.getType().name());
+			if (atome.estBase())
+			{
+				writer.write(";");
+				writer.write(atome.getCouleurBase().name());
+			}
 			writer.newLine();
 		}
 	}

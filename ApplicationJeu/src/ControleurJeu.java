@@ -3,12 +3,12 @@ package src;
 import src.ihm.FrameJeu;
 import src.ihm.FrameFermeture;
 
-public class Controleur
+public class ControleurJeu
 {
 	private FrameJeu frameJeu;
 	private FrameFermeture frameFermeture;
 
-	public Controleur()
+	public ControleurJeu()
 	{
 		this.frameJeu = new FrameJeu(this);
 	}
@@ -41,7 +41,7 @@ public class Controleur
 
 	public static void main(String[] ar)
 	{
-		new Controleur();
+		new ControleurJeu();
 	}
 
 }
