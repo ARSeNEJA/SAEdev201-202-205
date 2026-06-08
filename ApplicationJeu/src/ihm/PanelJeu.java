@@ -58,9 +58,7 @@ public class PanelJeu extends JPanel
         panelInformation.setLayout(new BoxLayout(panelInformation, BoxLayout.Y_AXIS));
         panelInformation.setPreferredSize(new Dimension(340, 0));
 
-        // ---------------------------------------------------
-        // SECTION A : Les Manches et Scores
-        // ---------------------------------------------------
+        
         JPanel panelMancheScore = new JPanel(new GridLayout(3, 1, 5, 5));
         panelMancheScore.setBorder(BorderFactory.createTitledBorder(
                 BorderFactory.createEtchedBorder(), "Progression", TitledBorder.LEFT, TitledBorder.TOP));
@@ -78,8 +76,6 @@ public class PanelJeu extends JPanel
         panelMancheScore.add(lblScoreManche);
         panelMancheScore.add(lblScoreTotal);
         
-
-        //
         
         panelInformation.add(panelPioche);
         panelInformation.add(Box.createVerticalStrut(5));
