@@ -86,7 +86,7 @@ public class LirePlateau
 		return plateauLu;
 	}
 
-	// Traduit la colonne optionnelle d'une base sans exception de controle.
+	// Lit la couleur de base optionnelle presente sur une ligne ATOME.
 	private Couleur lireCouleurBase(String[] valeurs)
 	{
 		if (valeurs.length < 5)
