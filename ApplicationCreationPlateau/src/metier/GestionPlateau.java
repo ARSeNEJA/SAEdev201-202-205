@@ -108,6 +108,12 @@ public class GestionPlateau
 		{
 			throw new IOException("Chaque zone doit contenir au moins une case.");
 		}
+		Zone zoneSeparee = plateau.getZoneSeparee(nombreZones);
+		if (zoneSeparee != null)
+		{
+			throw new IOException("La zone " + zoneSeparee.getId() +
+					" est separee en plusieurs morceaux.");
+		}
 
 		plateau.calculerVoisinsAtomes();
 		Atome atomeIsole = plateau.getAtomeIsole();

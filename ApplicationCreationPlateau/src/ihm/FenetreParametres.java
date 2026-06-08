@@ -115,36 +115,30 @@ public class FenetreParametres extends JFrame
 
 	public void traiterEnregistrement()
 	{
-		if (!this.appliquerParametresPlateau(false))
+		if (!this.appliquerParametresPlateau())
 		{
 			return;
 		}
 
-		int nombreZones = this.panelParametres.getNombreZonesChoisi();
-		File fichier = this.choisirDestinationEnregistrement();
+		this.enregistrerDansFichier(this.fichierPlateauCourant);
+	}
+
+	public void traiterEnregistrementCopie()
+	{
+		if (!this.appliquerParametresPlateau())
+		{
+			return;
+		}
+
+		File fichier = this.choisirFichierCopie(new File("../PlateauData"));
 		if (fichier == null)
 		{
 			return;
 		}
-
-		try
-		{
-			this.gestionPlateau.enregistrerPlateau(this.plateau, nombreZones, fichier);
-			this.afficherMessage(
-					"Le plateau a ete enregistre dans " + fichier.getName() + ".");
-		}
-		catch (IOException exception)
-		{
-			this.afficherMessage("Enregistrement impossible : " + exception.getMessage());
-		}
+		this.enregistrerDansFichier(fichier);
 	}
 
 	public boolean appliquerParametresPlateau()
-	{
-		return this.appliquerParametresPlateau(true);
-	}
-
-	private boolean appliquerParametresPlateau(boolean afficherConfirmation)
 	{
 		int largeur;
 		int hauteur;
@@ -175,11 +169,22 @@ public class FenetreParametres extends JFrame
 				nombreZones, this.panelParametres.getTypePiocheChoisi());
 		this.actualiserTailleEditeur();
 		this.panelEditeur.repaint();
-		if (afficherConfirmation)
-		{
-			this.afficherMessage("Les parametres du plateau ont ete appliques.");
-		}
 		return true;
+	}
+
+	private void enregistrerDansFichier(File fichier)
+	{
+		try
+		{
+			this.gestionPlateau.enregistrerPlateau(this.plateau,
+					this.panelParametres.getNombreZonesChoisi(), fichier);
+			this.afficherMessage(
+					"Le plateau a ete enregistre dans " + fichier.getName() + ".");
+		}
+		catch (IOException exception)
+		{
+			this.afficherMessage("Enregistrement impossible : " + exception.getMessage());
+		}
 	}
 
 	public void actualiserTailleEditeur()
@@ -217,29 +222,6 @@ public class FenetreParametres extends JFrame
 			return null;
 		}
 		return choixFichier.getSelectedFile();
-	}
-
-	private File choisirDestinationEnregistrement()
-	{
-		Object[] choix = {"Enregistrer le fichier actuel", "Creer une copie", "Annuler"};
-		int reponse = JOptionPane.showOptionDialog(this,
-				"Voulez-vous enregistrer le fichier actuel ou creer une copie ?",
-				"Enregistrer le plateau",
-				JOptionPane.YES_NO_CANCEL_OPTION,
-				JOptionPane.QUESTION_MESSAGE,
-				null,
-				choix,
-				choix[0]);
-
-		if (reponse == 0)
-		{
-			return this.fichierPlateauCourant;
-		}
-		if (reponse == 1)
-		{
-			return this.choisirFichierCopie(new File("../PlateauData"));
-		}
-		return null;
 	}
 
 	private File choisirFichierCopie(File dossier)

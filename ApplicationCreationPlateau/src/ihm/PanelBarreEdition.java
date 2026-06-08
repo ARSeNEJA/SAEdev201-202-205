@@ -23,6 +23,7 @@ public class PanelBarreEdition extends JPanel implements ActionListener
 	private JComboBox<Couleur>   comboCouleurBase;
 	private JButton boutonOuvrir;
 	private JButton boutonEnregistrer;
+	private JButton boutonCopie;
 
 	/*------------------*/
 	/*   Constructeur   */
@@ -40,6 +41,7 @@ public class PanelBarreEdition extends JPanel implements ActionListener
 		this.comboCouleurBase  = new JComboBox<>(Couleur.values());
 		this.boutonOuvrir      = new JButton("Ouvrir");
 		this.boutonEnregistrer = new JButton("Enregistrer le plateau");
+		this.boutonCopie       = new JButton("Copie");
 
 		this.comboModeEdition.addItem("Dessiner une zone");
 		this.comboModeEdition.addItem("Placer un atome");
@@ -63,12 +65,14 @@ public class PanelBarreEdition extends JPanel implements ActionListener
 		this.add(this.comboCouleurBase);
 		this.add(this.boutonOuvrir);
 		this.add(this.boutonEnregistrer);
+		this.add(this.boutonCopie);
 
 		/*-------------------------*/
 		/* Ajout des listeners     */
 		/*-------------------------*/
 		this.boutonOuvrir.addActionListener(this);
 		this.boutonEnregistrer.addActionListener(this);
+		this.boutonCopie.addActionListener(this);
 		this.comboModeEdition.addActionListener(this);
 		this.comboTypeAtome.addActionListener(this);
 		this.comboCouleurBase.addActionListener(this);
@@ -108,6 +112,10 @@ public class PanelBarreEdition extends JPanel implements ActionListener
 		if (e.getSource() == this.boutonEnregistrer)
 		{
 			this.fenetreParametres.traiterEnregistrement();
+		}
+		if (e.getSource() == this.boutonCopie)
+		{
+			this.fenetreParametres.traiterEnregistrementCopie();
 		}
 		if (e.getSource() == this.comboTypeAtome)
 		{

@@ -226,6 +226,21 @@ public class Plateau
 		return true;
 	}
 
+	public Zone getZoneSeparee(int nombreZones)
+	{
+		int id = 1;
+		while (id <= nombreZones)
+		{
+			Zone zone = this.getZoneParId(id);
+			if (zone != null && !zone.estConnexe())
+			{
+				return zone;
+			}
+			id++;
+		}
+		return null;
+	}
+
 	public boolean toutesCasesOntUneZone()
 	{
 		for (int colonne = 0; colonne < this.largeur; colonne++)
