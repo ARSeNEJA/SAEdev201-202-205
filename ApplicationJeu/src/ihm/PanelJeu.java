@@ -1,12 +1,12 @@
 package src.ihm;
 
-import src.Controleur;
+import src.ControleurJeu;
 
 import javax.swing.*;
 
 public class PanelJeu extends JPanel
 {
-	public PanelJeu( Controleur ctrl )
+	public PanelJeu( ControleurJeu ctrl )
 	{
 		this.add(new JLabel("Test 1"));
 	}
