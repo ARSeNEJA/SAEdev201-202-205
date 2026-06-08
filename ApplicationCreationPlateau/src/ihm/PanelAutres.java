@@ -22,6 +22,7 @@ public class PanelAutres extends JPanel implements ActionListener
 	/*------------------*/
 	/*   Constructeur   */
 	/*------------------*/
+	// Cree les boutons d'ouverture, d'enregistrement et de copie.
 	public PanelAutres(Fenetre fenetreParametres)
 	{
 		this.fenetreParametres = fenetreParametres;

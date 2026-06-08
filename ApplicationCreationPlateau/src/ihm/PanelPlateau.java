@@ -62,6 +62,7 @@ public class PanelPlateau extends JPanel implements ActionListener
 	/*------------------*/
 	/*   Constructeur   */
 	/*------------------*/
+	// Initialise le panneau de dessin et les choix d'edition par defaut.
 	public PanelPlateau(Plateau plateau, Fenetre fenetreParametres)
 	{
 		this.plateau           = plateau;
@@ -79,6 +80,7 @@ public class PanelPlateau extends JPanel implements ActionListener
 		this.actualiserTaille();
 	}
 
+	// Remplace le plateau affiche et adapte la taille du panneau.
 	public void setPlateau(Plateau plateau)
 	{
 		this.plateau = plateau;
@@ -88,6 +90,7 @@ public class PanelPlateau extends JPanel implements ActionListener
 	/*-----------------*/
 	/*    Méthodes     */
 	/*-----------------*/
+	// Reagit au changement de zone active depuis les parametres.
 	public void actionPerformed(ActionEvent e)
 	{
 		this.zoneActive  = this.fenetreParametres.getPanelParametres().getZoneActive();
@@ -95,6 +98,7 @@ public class PanelPlateau extends JPanel implements ActionListener
 		this.fenetreParametres.selectionnerModeEdition(MODE_ZONE);
 	}
 
+	// Recupere les choix courants dans les panneaux de la fenetre.
 	private void actualiserChoixDepuisFenetre()
 	{
 		this.actualiserChoixEdition(
@@ -106,6 +110,7 @@ public class PanelPlateau extends JPanel implements ActionListener
 
 	private class GererSouris extends MouseAdapter
 	{
+		// Place un atome ou une base lors d'un clic gauche hors mode zone.
 		public void mouseClicked(MouseEvent e)
 		{
 			PanelPlateau.this.actualiserChoixDepuisFenetre();
@@ -119,6 +124,7 @@ public class PanelPlateau extends JPanel implements ActionListener
 			PanelPlateau.this.placerAtomeOuBase(caseCliquee.getColonne(), caseCliquee.getLigne());
 		}
 
+		// Lance le dessin, la suppression ou l'effacement selon le bouton utilise.
 		public void mousePressed(MouseEvent e)
 		{
 			PanelPlateau.this.actualiserChoixDepuisFenetre();
@@ -139,6 +145,7 @@ public class PanelPlateau extends JPanel implements ActionListener
 			}
 		}
 
+		// Prolonge l'action de dessin ou de suppression pendant le glisser.
 		public void mouseDragged(MouseEvent e)
 		{
 			PanelPlateau.this.actualiserChoixDepuisFenetre();
@@ -157,6 +164,7 @@ public class PanelPlateau extends JPanel implements ActionListener
 		}
 	}
 
+	// Met a jour la taille preferee selon les dimensions du plateau.
 	public void actualiserTaille()
 	{
 		this.setPreferredSize(new Dimension(
@@ -166,6 +174,7 @@ public class PanelPlateau extends JPanel implements ActionListener
 		this.repaint();
 	}
 
+	// Memorise le mode, la zone, le type d'atome et la couleur de base actifs.
 	public void actualiserChoixEdition(String modeEdition, int zoneActive, TypeAtome typeAtome, Couleur couleurBase)
 	{
 		this.modeEdition  = modeEdition;
@@ -178,6 +187,7 @@ public class PanelPlateau extends JPanel implements ActionListener
 		if (this.couleurBase == null) {this.couleurBase = Couleur.ROUGE;}
 	}
 
+	// Convertit la position de la souris en coordonnees de case.
 	private Case obtenirPositionGrille(MouseEvent e)
 	{
 		int colonne = e.getX() / this.plateau.getTailleCase();
@@ -185,6 +195,7 @@ public class PanelPlateau extends JPanel implements ActionListener
 		return new Case(colonne, ligne);
 	}
 
+	// Affecte la case pointee a la zone active.
 	private void affecterCaseZone(MouseEvent evenement)
 	{
 		Case caseCliquee = this.obtenirPositionGrille(evenement);
@@ -196,6 +207,7 @@ public class PanelPlateau extends JPanel implements ActionListener
 		this.repaint();
 	}
 
+	// Retire la case pointee de toutes les zones.
 	private void supprimerZone(MouseEvent evenement)
 	{
 		Case caseCliquee = this.obtenirPositionGrille(evenement);
@@ -207,6 +219,7 @@ public class PanelPlateau extends JPanel implements ActionListener
 		this.repaint();
 	}
 
+	// Supprime l'atome place sur la case pointee.
 	private void supprimerAtome(MouseEvent evenement)
 	{
 		Case caseCliquee = this.obtenirPositionGrille(evenement);
@@ -218,6 +231,7 @@ public class PanelPlateau extends JPanel implements ActionListener
 		this.repaint();
 	}
 
+	// Place un atome simple ou une base selon le mode d'edition courant.
 	private void placerAtomeOuBase(int colonne, int ligne)
 	{
 		if (MODE_BASE.equals(this.modeEdition))
@@ -234,7 +248,7 @@ public class PanelPlateau extends JPanel implements ActionListener
 		this.repaint();
 	}
 
-	//Dessin
+	// Dessine le fond, les zones, la grille, les liaisons et les atomes.
 	protected void paintComponent(Graphics g)
 	{
 		super.paintComponent(g);
@@ -266,6 +280,7 @@ public class PanelPlateau extends JPanel implements ActionListener
 		}
 	}
 
+	// Colore les cases appartenant aux zones.
 	private void dessinerZones(Graphics g, int tailleCase)
 	{
 		ArrayList<Zone> zones = this.plateau.getZones();
@@ -285,6 +300,7 @@ public class PanelPlateau extends JPanel implements ActionListener
 		}
 	}
 
+	// Trace la grille du plateau.
 	private void dessinerGrille(Graphics g, int tailleCase)
 	{
 		int largeurPixels = this.plateau.getLargeur() * tailleCase;
@@ -300,6 +316,7 @@ public class PanelPlateau extends JPanel implements ActionListener
 		}
 	}
 
+	// Affiche le numero de chaque zone au centre de ses cases.
 	private void dessinerNumerosZones(Graphics g, int tailleCase)
 	{
 		ArrayList<Zone> zones = this.plateau.getZones();
@@ -321,6 +338,7 @@ public class PanelPlateau extends JPanel implements ActionListener
 		}
 	}
 
+	// Dessine une ligne entre deux atomes voisins.
 	private void dessinerLiaisons(Graphics g, int tailleCase)
 	{
 		g.setColor(new Color(145, 145, 150));
@@ -344,6 +362,7 @@ public class PanelPlateau extends JPanel implements ActionListener
 		}
 	}
 
+	// Encadre les atomes qui servent de bases.
 	private void dessinerRectangleEpais(Graphics g, int tailleCase)
 	{
 		ArrayList<Atome> atomes = this.plateau.getAtomes();
@@ -370,6 +389,7 @@ public class PanelPlateau extends JPanel implements ActionListener
 		}
 	}
 
+	// Charge l'image correspondant au type d'atome.
 	private Image chargerImageAtome(TypeAtome type)
 	{
 		File fichier = new File("images/symbole", type.getNomImage());
@@ -381,6 +401,7 @@ public class PanelPlateau extends JPanel implements ActionListener
 		return null;
 	}
 
+	// Charge l'image de fond de l'editeur si elle existe.
 	private Image chargerImageFond()
 	{
 		File fichier = new File("images/fond_microscope.png");
@@ -392,6 +413,7 @@ public class PanelPlateau extends JPanel implements ActionListener
 		return null;
 	}
 
+	// Convertit une couleur metier en couleur d'affichage.
 	private Color getCouleur(Couleur couleur)
 	{
 		if (couleur == Couleur.ROUGE) {return new Color(205, 45,  45);}

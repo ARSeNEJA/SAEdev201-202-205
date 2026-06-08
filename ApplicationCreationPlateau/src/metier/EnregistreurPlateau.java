@@ -13,12 +13,14 @@ public class EnregistreurPlateau
 {
 	private static final String CHEMIN_FICHIER = "../PlateauData/plateau.data";
 
+	// Ecrit le plateau dans le fichier de sauvegarde par defaut.
 	public void ecrire(Plateau plateau) throws IOException
 	{
 		File fichier = new File(CHEMIN_FICHIER);
 		this.ecrire(plateau, fichier);
 	}
 
+	// Ecrit le plateau complet dans le fichier donne.
 	public void ecrire(Plateau plateau, File fichier) throws IOException
 	{
 		File dossier = fichier.getParentFile();
@@ -38,6 +40,7 @@ public class EnregistreurPlateau
 		}
 	}
 
+	// Ecrit les dimensions et le type de pioche du plateau.
 	private void ecrireParametres(BufferedWriter writer, Plateau plateau) throws IOException
 	{
 		writer.write("PARAMETRES");
@@ -52,6 +55,7 @@ public class EnregistreurPlateau
 		writer.newLine();
 	}
 
+	// Ecrit les types d'atomes autorises.
 	private void ecrireTypes(BufferedWriter writer, Plateau plateau) throws IOException
 	{
 		writer.write("TYPES");
@@ -64,6 +68,7 @@ public class EnregistreurPlateau
 		writer.newLine();
 	}
 
+	// Ecrit les couleurs de bases disponibles.
 	private void ecrireCouleurs(BufferedWriter writer, Plateau plateau) throws IOException
 	{
 		writer.write("COULEURS");
@@ -76,6 +81,7 @@ public class EnregistreurPlateau
 		writer.newLine();
 	}
 
+	// Ecrit les zones non vides et leurs cases.
 	private void ecrireZones(BufferedWriter writer, Plateau plateau) throws IOException
 	{
 		ArrayList<Zone> zones = plateau.getZones();
@@ -100,6 +106,7 @@ public class EnregistreurPlateau
 		}
 	}
 
+	// Ecrit les atomes, avec leur couleur si ce sont des bases.
 	private void ecrireAtomes(BufferedWriter writer, Plateau plateau) throws IOException
 	{
 		ArrayList<Atome> atomes = plateau.getAtomes();

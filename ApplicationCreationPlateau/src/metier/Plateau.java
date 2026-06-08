@@ -24,6 +24,7 @@ public class Plateau
 	/*-------------------- */
 	/*    Constructeur     */
 	/*-------------------- */
+	// Cree un plateau avec toutes les couleurs et tous les types selectionnes.
 	public Plateau(int largeur, int hauteur, int tailleCase)
 	{
 		this.largeur = largeur;
@@ -50,15 +51,24 @@ public class Plateau
 	/*    Getters  et Setters */
 	/*------------------------*/
 
+	// Renvoie la largeur du plateau en nombre de cases.
 	public int                  getLargeur()               {return this.largeur;}
+	// Renvoie la hauteur du plateau en nombre de cases.
 	public int                  getHauteur()               {return this.hauteur;}
+	// Renvoie la taille d'affichage d'une case en pixels.
 	public int                  getTailleCase()            {return this.tailleCase;}
+	// Renvoie le type de pioche choisi.
 	public TypePioche           getTypePioche()            {return this.typePioche;}
+	// Renvoie les types d'atomes disponibles.
 	public ArrayList<TypeAtome> getTypesSelectionnes()     {return this.typesSelectionnes;}
+	// Renvoie les couleurs selectionnees pour les bases.
 	public ArrayList<Couleur>   getCouleursSelectionnees() {return this.couleursSelectionnees;}
+	// Renvoie toutes les zones du plateau.
 	public ArrayList<Zone>      getZones()                 {return this.zones;}
+	// Renvoie tous les atomes places sur le plateau.
 	public ArrayList<Atome>     getAtomes()                {return this.atomes;}
 
+	// Recherche une zone a partir de son identifiant.
 	public Zone getZoneParId(int id)
 	{
 		for (int i = 0; i < this.zones.size(); i++)
@@ -71,6 +81,7 @@ public class Plateau
 		return null;
 	}
 
+	// Recherche la zone qui contient une case donnee.
 	public Zone getZoneCase(int colonne, int ligne)
 	{
 		for (int i = 0; i < this.zones.size(); i++)
@@ -83,6 +94,7 @@ public class Plateau
 		return null;
 	}
 
+	// Recherche la zone contenant la position d'un atome.
 	public Zone getZoneAtome(Atome atome)
 	{
 		if (atome == null)
@@ -92,6 +104,7 @@ public class Plateau
 		return this.getZoneCase(atome.getPosition().getColonne(), atome.getPosition().getLigne());
 	}
 
+	// Recherche l'atome place sur une case donnee.
 	public Atome getAtomeCase(int colonne, int ligne)
 	{
 		for (int i = 0; i < this.atomes.size(); i++)
@@ -105,6 +118,7 @@ public class Plateau
 		return null;
 	}
 
+	// Modifie les dimensions et retire les elements sortis du plateau.
 	public void setDimensions(int largeur, int hauteur, int tailleCase)
 	{
 		this.largeur = largeur;
@@ -118,6 +132,7 @@ public class Plateau
 		this.calculerVoisinsAtomes();
 	}
 
+	// Change le type de pioche utilise par le plateau.
 	public void setTypePioche(TypePioche typePioche)
 	{
 		this.typePioche = typePioche;
@@ -126,6 +141,7 @@ public class Plateau
 	/*--------------------*/
 	/*    Méthodes        */
 	/*--------------------*/
+	// Calcule le plus grand numero de zone deja utilise.
 	public int calculerNombreZones()
 	{
 		int maximum = 1;
@@ -139,6 +155,7 @@ public class Plateau
 		return maximum;
 	}
 
+	// Applique les parametres saisis et ajuste le nombre de zones.
 	public void actualiserParametres(int largeur, int hauteur, int tailleCase, int nombreZones,
 			TypePioche typePioche)
 	{
@@ -147,6 +164,7 @@ public class Plateau
 		this.setTypePioche(typePioche);
 	}
 
+	// Verifie que les parametres principaux peuvent etre appliques.
 	public boolean parametresSontValides(int largeur, int hauteur, int tailleCase, int nombreZones,
 			TypePioche typePioche)
 	{
@@ -157,11 +175,13 @@ public class Plateau
 			   typePioche != null;
 	}
 
+	// Indique si des coordonnees sont dans les limites du plateau.
 	public boolean caseExiste(int colonne, int ligne)
 	{
 		return colonne >= 0 && ligne >= 0 && colonne < this.largeur && ligne < this.hauteur;
 	}
 
+	// Cree les zones manquantes et supprime celles en trop.
 	public void verifierNombreZones(int nombreZones)
 	{
 		int id = 1;
@@ -187,6 +207,7 @@ public class Plateau
 		}
 	}
 
+	// Enleve une case de toutes les zones pour eviter les doublons.
 	public void retirerCaseDesZones(int colonne, int ligne)
 	{
 		for (int i = 0; i < this.zones.size(); i++)
@@ -195,6 +216,7 @@ public class Plateau
 		}
 	}
 
+	// Affecte une case a une zone si elle est valide et voisine.
 	public boolean affecterCaseZone(int colonne, int ligne, int idZone)
 	{
 		if (!this.caseExiste(colonne, ligne))
@@ -211,6 +233,7 @@ public class Plateau
 		return true;
 	}
 
+	// Verifie que chaque zone attendue contient au moins une case.
 	public boolean toutesZonesOntDesCases(int nombreZones)
 	{
 		int id = 1;
@@ -226,6 +249,7 @@ public class Plateau
 		return true;
 	}
 
+	// Renvoie la premiere zone non connexe, si elle existe.
 	public Zone getZoneSeparee(int nombreZones)
 	{
 		int id = 1;
@@ -241,6 +265,7 @@ public class Plateau
 		return null;
 	}
 
+	// Verifie que chaque case du plateau appartient a une zone.
 	public boolean toutesCasesOntUneZone()
 	{
 		for (int colonne = 0; colonne < this.largeur; colonne++)
@@ -256,6 +281,7 @@ public class Plateau
 		return true;
 	}
 
+	// Renvoie le premier atome sans voisin apres recalcul des liaisons.
 	public Atome getAtomeIsole()
 	{
 		this.calculerVoisinsAtomes();
@@ -270,6 +296,7 @@ public class Plateau
 		return null;
 	}
 
+	// Place un atome sur une case libre et recalcule les voisins.
 	public boolean ajouterAtome(int colonne, int ligne, TypeAtome type)
 	{
 		if (!this.caseExiste(colonne, ligne) || type == null)
@@ -285,6 +312,7 @@ public class Plateau
 		return true;
 	}
 
+	// Supprime l'atome present sur une case et renvoie l'atome retire.
 	public Atome supprimerAtome(int colonne, int ligne)
 	{
 		Atome atome = this.getAtomeCase(colonne, ligne);
@@ -297,6 +325,7 @@ public class Plateau
 		return atome;
 	}
 
+	// Cree ou transforme un atome en base si la couleur et le symbole sont libres.
 	public boolean definirBase(int colonne, int ligne, TypeAtome type, Couleur couleur)
 	{
 		if (!this.caseExiste(colonne, ligne) || couleur == null)
@@ -334,6 +363,7 @@ public class Plateau
 		return true;
 	}
 
+	// Verifie si une base utilise deja la couleur donnee.
 	public boolean baseExisteCouleur(Couleur couleur)
 	{
 		for (int i = 0; i < this.atomes.size(); i++)
@@ -347,6 +377,7 @@ public class Plateau
 		return false;
 	}
 
+	// Verifie si une base utilise deja le symbole donne.
 	public boolean baseExisteSymbole(TypeAtome type)
 	{
 		for (int i = 0; i < this.atomes.size(); i++)
@@ -360,6 +391,7 @@ public class Plateau
 		return false;
 	}
 
+	// Recalcule les liaisons visibles dans les huit directions autour des atomes.
 	public void calculerVoisinsAtomes()
 	{
 		for (int i = 0; i < this.atomes.size(); i++)
@@ -387,6 +419,7 @@ public class Plateau
 		}
 	}
 
+	// Avance dans une direction jusqu'au premier atome rencontre.
 	private Atome chercherPremierAtomeDirection(Atome depart, int directionColonne, int directionLigne)
 	{
 		int colonne = depart.getPosition().getColonne() + directionColonne;
@@ -404,6 +437,7 @@ public class Plateau
 		return null;
 	}
 
+	// Retire les atomes situes hors des dimensions du plateau.
 	private void supprimerAtomesHorsPlateau()
 	{
 		int i = 0;

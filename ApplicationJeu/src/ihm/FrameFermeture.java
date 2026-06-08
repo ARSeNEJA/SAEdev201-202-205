@@ -13,6 +13,7 @@ public class FrameFermeture extends JFrame
 	
 	private int       tailleFrameX, tailleFrameY;
 	
+	// Cree la fenetre de confirmation centree a l'ecran.
 	public FrameFermeture( ControleurJeu ctrl )
 	{
 		tailleEcran  = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
@@ -38,6 +39,7 @@ public class FrameFermeture extends JFrame
 	}
 
 
+	// Ferme la fenetre de confirmation.
 	public void fermerFenetre()
 	{
 		this.dispose();

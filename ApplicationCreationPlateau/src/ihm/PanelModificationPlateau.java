@@ -27,6 +27,7 @@ public class PanelModificationPlateau extends JPanel implements ActionListener
 	/*------------------*/
 	/*   Constructeur   */
 	/*------------------*/
+	// Cree les choix de mode, de type d'atome et de couleur de base.
 	public PanelModificationPlateau()
 	{
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -68,6 +69,7 @@ public class PanelModificationPlateau extends JPanel implements ActionListener
 	/*------------------*/
 	/*     Getters      */
 	/*------------------*/
+	// Renvoie le type d'atome selectionne, avec H par defaut.
 	public TypeAtome getTypeAtomeChoisi()
 	{
 		TypeAtome type = (TypeAtome) this.comboTypeAtome.getSelectedItem();
@@ -75,6 +77,7 @@ public class PanelModificationPlateau extends JPanel implements ActionListener
 		return type;
 	}
 
+	// Renvoie la couleur de base selectionnee, avec rouge par defaut.
 	public Couleur getCouleurBaseChoisie()
 	{
 		Couleur couleur = (Couleur) this.comboCouleurBase.getSelectedItem();
@@ -82,6 +85,7 @@ public class PanelModificationPlateau extends JPanel implements ActionListener
 		return couleur;
 	}
 
+	// Renvoie le mode d'edition actuellement choisi.
 	public String getModeEditionChoisi()
 	{
 		return (String) this.comboModeEdition.getSelectedItem();

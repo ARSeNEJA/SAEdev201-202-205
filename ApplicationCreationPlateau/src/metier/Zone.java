@@ -13,6 +13,7 @@ public class Zone
 	/*---------------------*/
 	/*     Constructeur    */
 	/*---------------------*/
+	// Cree une zone vide avec son identifiant.
 	public Zone(int id)
 	{
 		this.id = id;
@@ -22,11 +23,13 @@ public class Zone
 	/*---------------------*/
 	/*        Getters      */
 	/*---------------------*/
+	// Renvoie l'identifiant de la zone.
 	public int getId()
 	{
 		return this.id;
 	}
 
+	// Renvoie les cases appartenant a la zone.
 	public ArrayList<Case> getCases()
 	{
 		return this.cases;
@@ -35,6 +38,7 @@ public class Zone
 	/*-------------------- */
 	/*       Méthodes      */
 	/*-------------------- */
+	// Verifie si une case precise appartient deja a la zone.
 	public boolean contientCase(int colonne, int ligne)
 	{
 		for (int i = 0; i < this.cases.size(); i++)
@@ -47,6 +51,7 @@ public class Zone
 		return false;
 	}
 
+	// Ajoute une case si elle n'est pas encore presente.
 	public void ajouterCase(int colonne, int ligne)
 	{
 		if (!this.contientCase(colonne, ligne))
@@ -55,6 +60,7 @@ public class Zone
 		}
 	}
 
+	// Autorise l'ajout seulement si la case touche une case existante.
 	public boolean peutAjouterCaseVoisine(int colonne, int ligne)
 	{
 		if (this.cases.isEmpty() || this.contientCase(colonne, ligne))
@@ -74,6 +80,7 @@ public class Zone
 		return false;
 	}
 
+	// Controle que toutes les cases de la zone restent connectees.
 	public boolean estConnexe()
 	{
 		if (this.cases.size() <= 1)
@@ -98,6 +105,7 @@ public class Zone
 		return casesVisitees.size() == this.cases.size();
 	}
 
+	// Ajoute a la recherche les voisines directes encore non visitees.
 	private void ajouterVoisinesNonVisitees(Case caseCourante, ArrayList<Case> casesVisitees,
 			ArrayList<Case> casesAVisiter)
 	{
@@ -115,6 +123,7 @@ public class Zone
 		}
 	}
 
+	// Cherche une case equivalente dans une liste de cases.
 	private boolean contientCaseDansListe(ArrayList<Case> liste, Case caseCherchee)
 	{
 		for (int i = 0; i < liste.size(); i++)
@@ -128,6 +137,7 @@ public class Zone
 		return false;
 	}
 
+	// Supprime une case de la zone a partir de ses coordonnees.
 	public void supprimerCase(int colonne, int ligne)
 	{
 		int i = 0;
@@ -144,6 +154,7 @@ public class Zone
 		}
 	}
 
+	// Retire les cases qui depassent les dimensions actuelles du plateau.
 	public void supprimerCasesHorsPlateau(int largeur, int hauteur)
 	{
 		int i = 0;

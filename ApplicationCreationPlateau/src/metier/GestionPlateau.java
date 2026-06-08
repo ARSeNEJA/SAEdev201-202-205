@@ -10,6 +10,7 @@ public class GestionPlateau
 
 	private File fichierPlateauCourant;
 
+	// Initialise le gestionnaire avec le fichier plateau par defaut.
 	public GestionPlateau()
 	{
 		this.fichierPlateauCourant = new File(CHEMIN_DOSSIER_PLATEAUX, NOM_PLATEAU_DEFAUT);
@@ -39,11 +40,13 @@ public class GestionPlateau
 		return dossier;
 	}
 
+	// Renvoie le fichier associe a la sauvegarde courante.
 	public File getFichierPlateauCourant()
 	{
 		return this.fichierPlateauCourant;
 	}
 
+	// Propose un fichier de copie dans le dossier des plateaux.
 	public File getFichierCopiePropose()
 	{
 		return new File(this.getDossierPlateaux(), this.fichierPlateauCourant.getName());
@@ -83,6 +86,7 @@ public class GestionPlateau
 		return fichier != null && fichier.getName().toLowerCase().endsWith(".data");
 	}
 
+	// Enregistre le plateau dans le fichier courant.
 	public void enregistrerPlateau(Plateau plateau, int nombreZones) throws IOException
 	{
 		this.enregistrerPlateau(plateau, nombreZones, this.fichierPlateauCourant);

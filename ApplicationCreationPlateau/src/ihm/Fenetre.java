@@ -31,6 +31,7 @@ public class Fenetre extends JFrame
 	/*--------------------*/
 	/*    Constructeur    */
 	/*--------------------*/
+	// Construit la fenetre principale de l'editeur de plateau.
 	public Fenetre(Plateau plateau)
 	{
 		this.plateau     = plateau;
@@ -73,16 +74,19 @@ public class Fenetre extends JFrame
 	/*-----------*/
 	/*  Getters  */
 	/*-----------*/
+	// Renvoie le panneau contenant les parametres du plateau.
 	public PanelParametres getPanelParametres()
 	{
 		return this.panelParametres;
 	}
 
+	// Renvoie le panneau contenant les outils de modification.
 	public PanelModificationPlateau getPanelModificationPlateau()
 	{
 		return this.panelModificationPlateau;
 	}
 
+	// Renvoie le plateau actuellement edite.
 	public Plateau getPlateau()
 	{
 		return this.plateau;
@@ -91,6 +95,7 @@ public class Fenetre extends JFrame
 	/*---------------------*/
 	/*    Méthodes         */
 	/*---------------------*/
+	// Ouvre un fichier plateau et recharge l'editeur avec son contenu.
 	public void traiterOuverture()
 	{
 		File fichier = this.choisirFichierPlateau(this.gestionPlateau.getDossierPlateaux());
@@ -109,6 +114,7 @@ public class Fenetre extends JFrame
 		}
 	}
 
+	// Applique les parametres puis enregistre dans le fichier courant.
 	public void traiterEnregistrement()
 	{
 		if (!this.appliquerParametresPlateau())
@@ -119,6 +125,7 @@ public class Fenetre extends JFrame
 		this.enregistrerPlateauCourant();
 	}
 
+	// Applique les parametres puis demande un fichier pour enregistrer une copie.
 	public void traiterEnregistrementCopie()
 	{
 		if (!this.appliquerParametresPlateau())
@@ -202,11 +209,13 @@ public class Fenetre extends JFrame
 		}
 	}
 
+	// Ajuste la taille du panneau editeur selon le plateau.
 	public void actualiserTailleEditeur()
 	{
 		this.panelEditeur.actualiserTaille();
 	}
 
+	// Remplace le plateau courant par celui qui vient d'etre ouvert.
 	public void chargerPlateauOuvert(Plateau plateau, int nombreZones)
 	{
 		this.panelEditeur.setPlateau(plateau);
@@ -218,6 +227,7 @@ public class Fenetre extends JFrame
 		this.panelEditeur.repaint();
 	}
 
+	// Synchronise le mode d'edition avec le panneau de modification.
 	public void selectionnerModeEdition(String mode)
 	{
 		if (!mode.equals(this.panelModificationPlateau.getModeEditionChoisi()))
@@ -226,6 +236,7 @@ public class Fenetre extends JFrame
 		}
 	}
 
+	// Affiche une boite de dialogue pour choisir un fichier plateau a ouvrir.
 	public File choisirFichierPlateau(File dossier)
 	{
 		JFileChooser choixFichier = new JFileChooser(dossier);
@@ -246,6 +257,7 @@ public class Fenetre extends JFrame
 		return fichier;
 	}
 
+	// Affiche une boite de dialogue pour choisir le fichier de copie.
 	private File choisirFichierCopie(File dossier)
 	{
 		if (dossier != null && !dossier.exists())
@@ -279,6 +291,7 @@ public class Fenetre extends JFrame
 		return fichier;
 	}
 
+	// Affiche un message d'information ou d'erreur a l'utilisateur.
 	public void afficherMessage(String message)
 	{
 		JOptionPane.showMessageDialog(this, message);

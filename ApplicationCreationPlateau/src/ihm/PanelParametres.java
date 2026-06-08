@@ -29,6 +29,7 @@ public class PanelParametres extends JPanel implements ActionListener
 	private JComboBox<TypePioche> comboPioche;
 	private JButton boutonAppliquerParametres;
 
+	// Cree le panneau des dimensions, zones et options du plateau.
 	public PanelParametres(Plateau plateau, Fenetre fenetreParametres)
 	{
 		this.fenetreParametres = fenetreParametres;
@@ -78,11 +79,16 @@ public class PanelParametres extends JPanel implements ActionListener
 	/*------------------*/
 	/*     Getters      */
 	/*------------------*/
+	// Renvoie la largeur saisie par l'utilisateur.
 	public int getLargeurChoisie() {return Integer.parseInt(this.champLargeur.getText().trim());}
+	// Renvoie la hauteur saisie par l'utilisateur.
 	public int getHauteurChoisie() {return Integer.parseInt(this.champHauteur.getText().trim());}
+	// Renvoie la taille de case saisie par l'utilisateur.
 	public int getTailleCaseChoisie() {return Integer.parseInt(this.champTailleCase.getText().trim());}
+	// Renvoie le type de pioche selectionne.
 	public TypePioche getTypePiocheChoisi() {return (TypePioche) this.comboPioche.getSelectedItem();}
 
+	// Renvoie le nombre de zones choisi, avec 1 par defaut.
 	public int getNombreZonesChoisi()
 	{
 		Integer valeur = (Integer) this.comboNombreZones.getSelectedItem();
@@ -93,6 +99,7 @@ public class PanelParametres extends JPanel implements ActionListener
 		return valeur;
 	}
 
+	// Renvoie la zone active, avec 1 par defaut.
 	public int getZoneActive()
 	{
 		Integer valeur = (Integer) this.comboZoneActive.getSelectedItem();

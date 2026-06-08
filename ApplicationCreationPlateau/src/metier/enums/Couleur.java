@@ -4,6 +4,7 @@ public enum Couleur
 {
 	ROUGE,VERT,BLEU,MARRON;
 
+	// Renvoie le nom lisible de la couleur.
 	public String getNom()
 	{
 		if (this == ROUGE){return "Rouge";}
