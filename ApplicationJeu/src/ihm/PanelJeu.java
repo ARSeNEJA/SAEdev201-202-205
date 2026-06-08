@@ -1,16 +1,18 @@
 package src.ihm;
 
-import src.ControleurJeu;
+import src.Controleur;
 
+import java.awt.*;
 import javax.swing.*;
+import javax.swing.border.TitledBorder;
 
 public class PanelJeu extends JPanel
 {
-	public PanelJeu( ControleurJeu ctrl )
+	private JPanel panelPlateau;
+	private JPanel panelInformation;
+
+	public PanelJeu( Controleur ctrl )
 	{
-<<<<<<< Updated upstream
-		this.add(new JLabel("Test 1"));
-=======
 		//this.add(new JLabel("Test 1"));
 
 		this.setLayout(new BorderLayout(10, 10));
@@ -91,6 +93,40 @@ public class PanelJeu extends JPanel
 
         this.add(panelPlateau, BorderLayout.CENTER);
         this.add(panelInformation, BorderLayout.WEST);
->>>>>>> Stashed changes
 	}
+
+    protected void paintComponent(Graphics g) 
+	{
+		super.paintComponent(g); 
+			
+		Graphics2D g2 = (Graphics2D) g;
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+        // Dessin d'une grille témoin
+        g2.setColor(new Color(220, 220, 220));
+        int tailleCase = 60;  //a modifier en fonction de la taille du plateau
+        for (int i = 0; i < this.getWidth(); i += tailleCase) {
+            g2.drawLine(i, 0, i, this.getHeight());
+        }
+        for (int j = 0; j < this.getHeight(); j += tailleCase) {
+            g2.drawLine(0, j, this.getWidth(), j);
+        }
+
+            
+    }
+
+    private JLabel creerVisuelCarte(String texte, Color fond, Color couleurTexte) 
+    {
+        JLabel lblCarte = new JLabel("<html><center>" + texte.replace("\n", "<br>") + "</center></html>", SwingConstants.CENTER);
+        lblCarte.setPreferredSize(new Dimension(100, 140));
+        lblCarte.setOpaque(true);
+        lblCarte.setBackground(fond);
+        lblCarte.setForeground(couleurTexte);
+        lblCarte.setFont(new Font("Arial", Font.BOLD, 14));
+        lblCarte.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(Color.BLACK, 2, true),
+                BorderFactory.createEmptyBorder(5, 5, 5, 5)
+        ));
+        return lblCarte;
+    }
 }
