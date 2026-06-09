@@ -19,7 +19,12 @@ public class PanelFermeture extends JPanel implements ActionListener
 	
 	private JLabel         lblMessage;
 	
+<<<<<<< HEAD
 	public PanelFermeture( ControleurJeu ctrl )
+=======
+	// Cree le message de confirmation et les boutons Oui/Non.
+	public PanelFermeture( Controleur ctrl )
+>>>>>>> origin/main
 	{
 		this.ctrl = ctrl;
 		
@@ -55,6 +60,7 @@ public class PanelFermeture extends JPanel implements ActionListener
 	}
 
 
+	// Traite le choix de l'utilisateur lors de la fermeture.
 	public void actionPerformed(ActionEvent e)
 	{
 		if ( e.getSource() == this.btnNon )

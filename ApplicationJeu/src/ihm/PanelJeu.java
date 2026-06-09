@@ -8,10 +8,15 @@ import javax.swing.border.TitledBorder;
 
 public class PanelJeu extends JPanel
 {
+<<<<<<< HEAD
 	private JPanel panelPlateau;
 	private JPanel panelInformation;
 
 	public PanelJeu( ControleurJeu ctrl )
+=======
+	// Cree le panneau principal du jeu.
+	public PanelJeu( Controleur ctrl )
+>>>>>>> origin/main
 	{
 		//this.add(new JLabel("Test 1"));
 
