@@ -1,99 +1,93 @@
 package src.ihm;
 
-import src.ControleurJeu;
+import src.Controleur;
 
-import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
+
+import java.awt.RenderingHints;
+import java.awt.Graphics2D;
+import java.awt.Graphics;
+
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Color;
+import java.awt.Font;
+
 public class PanelJeu extends JPanel
 {
-<<<<<<< HEAD
 	private JPanel panelPlateau;
 	private JPanel panelInformation;
 
-	public PanelJeu( ControleurJeu ctrl )
-=======
-	// Cree le panneau principal du jeu.
 	public PanelJeu( Controleur ctrl )
->>>>>>> origin/main
 	{
-		//this.add(new JLabel("Test 1"));
-
 		this.setLayout(new BorderLayout(10, 10));
-		
-		panelPlateau = new JPanel();
-		
-		// PANNEL de JEu ( panneau central )
-        panelPlateau.setBackground(new Color(250, 250, 250));
-        panelPlateau.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY, 2));
 
+        // PANEL de Jeu ( panel central )
+		panelPlateau = new JPanel();
+        panelPlateau.setBackground(new Color(255, 255, 255));
                 
-        // PANNEL INFORMATION - HUD ( Zone gauche )
+        // PANEL INFORMATION ( panel gauche )
         panelInformation = new JPanel();
-        panelInformation.setLayout(new BoxLayout(panelInformation, BoxLayout.Y_AXIS));
-        panelInformation.setSize(320, 0);
+        panelInformation.setLayout       (new BoxLayout(panelInformation, BoxLayout.Y_AXIS));
+        panelInformation.setPreferredSize(new Dimension(360, 0)                            );
+        
 
         // Zone deck
-        JPanel panelPioche = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
-        panelPioche.setBorder(BorderFactory.createTitledBorder(
-                BorderFactory.createEtchedBorder(), "Pioche", TitledBorder.LEFT, TitledBorder.TOP));
+        JPanel panelPioche    = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
+        panelPioche.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Pioche", TitledBorder.LEFT, TitledBorder.TOP));
 
-        JLabel carteRetournee = creerVisuelCarte("Pioche", new Color(70, 130, 180), Color.WHITE);
+        JLabel carteRetournee = creerVisuelCarte("Pioche",            new Color( 70, 130, 180), Color.WHITE);
         JLabel carteTournee   = creerVisuelCarte("Oxygène\n(Foncée)", new Color(240, 240, 240), Color.BLACK);
 
-        panelPioche.add(carteRetournee);
-        panelPioche.add(carteTournee);
+        JLabel lblMinuterie   = new JLabel("Cartes foncées restantes : 7", SwingConstants.CENTER);
+        lblMinuterie.setFont      (new Font("Arial", Font.ITALIC, 13));
+        lblMinuterie.setForeground(new Color(200, 0, 0)              );
+        lblMinuterie.setAlignmentX(Component.CENTER_ALIGNMENT        );
 
-        JLabel lblMinuterie = new JLabel("Cartes foncées restantes : 7", SwingConstants.CENTER);
-        lblMinuterie.setFont(new Font("Arial", Font.ITALIC, 13));
-        lblMinuterie.setForeground(new Color(200, 0, 0));
-        lblMinuterie.setAlignmentX(Component.CENTER_ALIGNMENT);
+        panelPioche.add(carteRetournee);
+        panelPioche.add(carteTournee  );
+        panelPioche.add(lblMinuterie  );
+
 
         // Zone carte defausse
-        JPanel panelDefausse = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
-        panelDefausse.setBorder(BorderFactory.createTitledBorder(
-                BorderFactory.createEtchedBorder(), "Défausse", TitledBorder.LEFT, TitledBorder.TOP));
+        JPanel panelDefausse  = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
+        panelDefausse.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Défausse", TitledBorder.LEFT, TitledBorder.TOP));
 
         JLabel carteDefaussee = creerVisuelCarte("Carbone", new Color(200, 200, 200), Color.DARK_GRAY);
         panelDefausse.add(carteDefaussee);
 
-        //Zone des manches et scores 
-        panelInformation = new JPanel();
-        panelInformation.setLayout(new BoxLayout(panelInformation, BoxLayout.Y_AXIS));
-        panelInformation.setPreferredSize(new Dimension(340, 0));
 
+        //Zone du score des manches
+        JPanel panelScoreManches = new JPanel(new GridLayout(3, 1, 5, 5));
+        panelScoreManches.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Progression", TitledBorder.LEFT, TitledBorder.TOP));
         
-        JPanel panelMancheScore = new JPanel(new GridLayout(3, 1, 5, 5));
-        panelMancheScore.setBorder(BorderFactory.createTitledBorder(
-                BorderFactory.createEtchedBorder(), "Progression", TitledBorder.LEFT, TitledBorder.TOP));
+        JLabel   lblInfos  = new JLabel(String.format(%40s , "Informations : Zones  Atomes max  Résultat"), SwingConstants.LEFT);
+        JLabel[] lblScoreManche = new JLabel[5];
+        for (int i = 0; i < lblScoreManche.length; i++)
+        {
+            lblScoreManche[i] = new JLabel (String.format(%40s , "Manche " + (i + 1) + "    5  x  2  =  10"), SwingConstants.LEFT);
+            lblScoreManche[i].setFont      (new Font("Arial", Font.PLAIN, 13));
+            lblScoreManche[i].setForeground(new Color(0, 102, 204)           );
+        }
         
-        JLabel lblManche      = new JLabel("Manche actuelle : 2 / 5", SwingConstants.CENTER);
-        JLabel lblScoreManche = new JLabel("Score de la chaîne : 12 pts", SwingConstants.CENTER);
-        JLabel lblScoreTotal  = new JLabel("Score total : 45 pts", SwingConstants.CENTER);
-        
-        lblManche.setFont(new Font("Arial", Font.BOLD, 15));
-        lblManche.setForeground(new Color(0, 102, 204)); 
-        lblScoreManche.setFont(new Font("Arial", Font.PLAIN, 14));
-        lblScoreTotal.setFont(new Font("Arial", Font.BOLD, 14));
-        
-        panelMancheScore.add(lblManche);
-        panelMancheScore.add(lblScoreManche);
-        panelMancheScore.add(lblScoreTotal);
-        
+        panelMancheScore.add(lblScoreManche);       
         
         panelInformation.add(panelPioche);
         panelInformation.add(Box.createVerticalStrut(5));
-        panelInformation.add(lblMinuterie);
-        panelInformation.add(Box.createVerticalStrut(15));
+        //panelInformation.add(lblMinuterie);
+        //panelInformation.add(Box.createVerticalStrut(15));
         panelInformation.add(panelDefausse);
         panelInformation.add(Box.createVerticalGlue()); 
         panelInformation.add(panelMancheScore);
         panelInformation.add(Box.createVerticalStrut(15));
         
-
-        this.add(panelPlateau, BorderLayout.CENTER);
-        this.add(panelInformation, BorderLayout.WEST);
+        this.add(panelInformation, BorderLayout.WEST  );
+        this.add(panelPlateau,     BorderLayout.CENTER);
 	}
 
     protected void paintComponent(Graphics g) 
