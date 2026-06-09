@@ -1,15 +1,14 @@
 @echo off
 setlocal
 
-pushd "%~dp0ApplicationJeu"
+pushd "%~dp0"
 if not exist class mkdir class
 
-javac -encoding UTF-8 -d class
-	src\ControleurJeu.java
-	src\metier\*.java
-	src\metier\enums\*.java
-	src\ihm\*.java
+javac -encoding UTF-8 -d class @ApplicationJeu\src\compile.list
 
-if errorlevel 1 exit /b 1
-java -cp class src.ControleurJeu
+if errorlevel 1 (
+	popd
+	exit /b 1
+)
+java -cp class src.Controleur
 popd
