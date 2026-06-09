@@ -3,13 +3,13 @@ package src;
 import src.ihm.FrameJeu;
 import src.ihm.FrameFermeture;
 
-public class ControleurJeu
+public class Controleur
 {
 	private FrameJeu frameJeu;
 	private FrameFermeture frameFermeture;
 
 	// Cree la fenetre principale du jeu.
-	public ControleurJeu()
+	public Controleur()
 	{
 		this.frameJeu = new FrameJeu(this);
 	}
@@ -47,7 +47,7 @@ public class ControleurJeu
 	// Lance l'application de jeu.
 	public static void main(String[] ar)
 	{
-		new ControleurJeu();
+		new Controleur();
 	}
 
 }

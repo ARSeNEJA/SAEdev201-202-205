@@ -1,6 +1,6 @@
 package src.ihm;
 
-import src.ControleurJeu;
+import src.Controleur;
 
 import javax.swing.*;
 import java.awt.Toolkit.*;
@@ -14,7 +14,7 @@ public class FrameFermeture extends JFrame
 	private int       tailleFrameX, tailleFrameY;
 	
 	// Cree la fenetre de confirmation centree a l'ecran.
-	public FrameFermeture( ControleurJeu ctrl )
+	public FrameFermeture( Controleur ctrl )
 	{
 		tailleEcran  = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
 		

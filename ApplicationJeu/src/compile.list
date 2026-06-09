@@ -1,4 +1,4 @@
-ApplicationJeu/src/ControleurJeu.java
+ApplicationJeu/src/Controleur.java
 
 ApplicationJeu/src/ihm/FrameJeu.java
 ApplicationJeu/src/ihm/PanelJeu.java

@@ -1,6 +1,6 @@
 package src.ihm;
 
-import src.ControleurJeu;
+import src.Controleur;
 
 import javax.swing.*;
 import java.awt.Toolkit.*;
@@ -13,7 +13,7 @@ public class FrameJeu extends JFrame
 	private int ecranX, ecranY;
 
 	// Cree la fenetre principale en plein ecran.
-	public FrameJeu ( ControleurJeu ctrl )
+	public FrameJeu ( Controleur ctrl )
 	{
 		tailleEcran = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
 		
@@ -39,10 +39,10 @@ public class FrameJeu extends JFrame
 	// Intercepte la fermeture pour demander confirmation.
 	private class FermetureFenetre extends WindowAdapter
 	{
-		private ControleurJeu ctrl;
+		private Controleur ctrl;
 		
 		// Memorise le controleur appele lors de la fermeture.
-		public FermetureFenetre(ControleurJeu ctrl)
+		public FermetureFenetre(Controleur ctrl)
 		{
 			this.ctrl = ctrl;
 		}

@@ -10,4 +10,4 @@ mkdir -p class
 
 javac -encoding UTF-8 -d class @ApplicationJeu/src/compile.list
 
-java -cp class src.ControleurJeu
+java -cp class src.Controleur
