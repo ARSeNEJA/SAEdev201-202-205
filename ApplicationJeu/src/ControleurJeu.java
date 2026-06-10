@@ -8,12 +8,8 @@ public class ControleurJeu
 	private FrameJeu frameJeu;
 	private FrameFermeture frameFermeture;
 
-<<<<<<< HEAD:ApplicationJeu/src/ControleurJeu.java
-	public ControleurJeu()
-=======
 	// Cree la fenetre principale du jeu.
 	public Controleur()
->>>>>>> origin/main:ApplicationJeu/src/Controleur.java
 	{
 		this.frameJeu = new FrameJeu(this);
 	}

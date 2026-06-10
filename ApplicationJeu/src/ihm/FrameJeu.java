@@ -12,12 +12,8 @@ public class FrameJeu extends JFrame
 	private Dimension tailleEcran;
 	private int ecranX, ecranY;
 
-<<<<<<< HEAD
-	public FrameJeu ( ControleurJeu ctrl )
-=======
 	// Cree la fenetre principale en plein ecran.
 	public FrameJeu ( Controleur ctrl )
->>>>>>> origin/main
 	{
 		tailleEcran = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
 		
@@ -45,12 +41,8 @@ public class FrameJeu extends JFrame
 	{
 		private ControleurJeu ctrl;
 		
-<<<<<<< HEAD
-		public FermetureFenetre(ControleurJeu ctrl)
-=======
 		// Memorise le controleur appele lors de la fermeture.
 		public FermetureFenetre(Controleur ctrl)
->>>>>>> origin/main
 		{
 			this.ctrl = ctrl;
 		}
