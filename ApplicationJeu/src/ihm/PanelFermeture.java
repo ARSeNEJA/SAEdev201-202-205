@@ -1,6 +1,6 @@
 package src.ihm;
 
-import src.ControleurJeu;
+import src.Controleur;
 
 import javax.swing.*;
 import java.awt.event.*;
@@ -10,7 +10,7 @@ import java.awt.GridLayout;
 
 public class PanelFermeture extends JPanel implements ActionListener
 {
-	private ControleurJeu     ctrl;
+	private Controleur     ctrl;
 	private FrameFermeture frameFermeture;
 	
 	private JButton        btnNon, btnOui;
@@ -19,12 +19,8 @@ public class PanelFermeture extends JPanel implements ActionListener
 	
 	private JLabel         lblMessage;
 	
-<<<<<<< HEAD
-	public PanelFermeture( ControleurJeu ctrl )
-=======
 	// Cree le message de confirmation et les boutons Oui/Non.
 	public PanelFermeture( Controleur ctrl )
->>>>>>> origin/main
 	{
 		this.ctrl = ctrl;
 		

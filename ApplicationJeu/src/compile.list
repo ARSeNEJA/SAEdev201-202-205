@@ -1,11 +1,8 @@
-<<<<<<< HEAD
-./ControleurJeu.java
-=======
 ApplicationJeu/src/Controleur.java
->>>>>>> origin/main
 
 ApplicationJeu/src/ihm/FrameJeu.java
 ApplicationJeu/src/ihm/PanelJeu.java
+ApplicationJeu/src/ihm/PlateauDessin.java
 
 ApplicationJeu/src/ihm/FrameFermeture.java
 ApplicationJeu/src/ihm/PanelFermeture.java

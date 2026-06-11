@@ -1,6 +1,6 @@
 package src.ihm;
 
-import src.ControleurJeu;
+import src.Controleur;
 
 import javax.swing.*;
 import java.awt.Toolkit.*;
@@ -25,7 +25,7 @@ public class FrameJeu extends JFrame
 		this.setLocation( 0, 0 );
 		
 		// Création et ajout du Panel
-		this.add ( new PanelJeu(ctrl) );
+		this.add ( new PanelJeu(ctrl, ecranX, ecranY) );
 		
 		// Gestion de la fermeture de la fenêtre
 		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -39,7 +39,7 @@ public class FrameJeu extends JFrame
 	// Intercepte la fermeture pour demander confirmation.
 	private class FermetureFenetre extends WindowAdapter
 	{
-		private ControleurJeu ctrl;
+		private Controleur ctrl;
 		
 		// Memorise le controleur appele lors de la fermeture.
 		public FermetureFenetre(Controleur ctrl)
