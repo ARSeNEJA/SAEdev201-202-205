@@ -39,8 +39,8 @@ public class PanelJeu extends JPanel
 
     // Composants du panel pioche
     private JLabel        lblMinuterie;
-    //private JButton       btnPiocher;
-    //private JLabel        lblCartePiochee;
+    private JButton       btnPiocher;
+    private JLabel        lblCartePiochee;
 
     // Composants du panel defausse
     private JScrollPane   spDefausse;
@@ -82,8 +82,11 @@ public class PanelJeu extends JPanel
         panelPioche.setPreferredSize(new Dimension((int)(lInformation * 0.2), (int)(hEcran * 0.3)));
         panelPioche.setMinimumSize  (new Dimension(                      250, (int)(hEcran * 0.2)));
 
-        JLabel carteRetournee = creerVisuelCarte("Pioche",            new Color( 70, 130, 180), Color.WHITE);   // A remplacer par un bouton avec image de carte
-        JLabel carteTournee   = creerVisuelCarte("Oxygène\n(Foncée)", new Color(240, 240, 240), Color.BLACK);   // A remplacer par une image de carte
+        btnPiocher      = new JButton("Piocher"             );
+        lblCartePiochee = new JLabel ("Aucune carte piochée");
+
+        btnPiocher      = creerVisuelPioche();                                                           // A modifier pour que une image de carte sois sur le bouton
+        lblCartePiochee = creerVisuelCarte ("Carte Piochée", new Color( 70, 130, 180), Color.WHITE);     // A modifier pour que ce soit automatique en fonction de la carte piochée
 
         lblMinuterie = new JLabel ("Cartes foncées restantes : 7", SwingConstants.CENTER);
         lblMinuterie.setFont      (new Font("Arial", Font.ITALIC | Font.BOLD, 13)       );
@@ -104,7 +107,7 @@ public class PanelJeu extends JPanel
         for (int i = 0; i < lblCartesDefaussee.length; i++)
         {
             lblCartesDefaussee[i] = creerVisuelCarte("Carbone", new Color(200, 200, 200), Color.DARK_GRAY); // A remplacer par les images de cartes
-            lblCartesDefaussee[i].setPreferredSize(new Dimension(70, 145));                                 //
+            lblCartesDefaussee[i].setPreferredSize  (new Dimension(70, 145)                              ); //
         } 
 
 
@@ -128,15 +131,15 @@ public class PanelJeu extends JPanel
             lblScoreManche[i].setFont      (new Font("Arial", Font.PLAIN, 15)                                              ); //
             lblScoreManche[i].setForeground(Color.BLACK                                                                    ); //
             lblScoreManche[i].setBorder    (BorderFactory.createMatteBorder(1, 1, 1, 1, Color.GRAY)                        ); //
-            lblScoreManche[i].setPreferredSize(new Dimension(300, 50)                                                  ); //
+            lblScoreManche[i].setPreferredSize(new Dimension(300, 50)                                                      ); //
         }
 
         // ======================
         //  Ajout des composants
         // ======================
         // Ajout des composants du panel Pioche
-        panelCartes.add(carteRetournee);
-        panelCartes.add(carteTournee  );
+        panelCartes.add(btnPiocher     );
+        panelCartes.add(lblCartePiochee);
 
         panelPioche.add(panelCartes,  BorderLayout.CENTER);
         panelPioche.add(lblMinuterie, BorderLayout.SOUTH );
@@ -163,19 +166,33 @@ public class PanelJeu extends JPanel
         this.add(panelPlateau,     BorderLayout.CENTER);
 	}
 
-
-    private JLabel creerVisuelCarte(String texte, Color fond, Color couleurTexte) 
+    private JButton creerVisuelPioche() 
     {
-        JLabel lblCarte = new JLabel("<html><center>" + texte.replace("\n", "<br>") + "</center></html>", SwingConstants.CENTER);
-        lblCarte.setPreferredSize(new Dimension(140, 210));
-        lblCarte.setOpaque(true);
-        lblCarte.setBackground(fond);
-        lblCarte.setForeground(couleurTexte);
-        lblCarte.setFont(new Font("Arial", Font.BOLD, 14));
-        lblCarte.setBorder(BorderFactory.createCompoundBorder(
+        JButton btn = new JButton("Piocher");
+        btn.setPreferredSize(new Dimension(140, 210));
+        btn.setOpaque(true);
+        btn.setBackground(new Color(70, 130, 180));
+        btn.setForeground(Color.WHITE);
+        btn.setFont(new Font("Arial", Font.BOLD, 14));
+        btn.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(Color.BLACK, 2, true),
                 BorderFactory.createEmptyBorder(5, 5, 5, 5)
         ));
-        return lblCarte;
+        return btn;
+    }
+
+    private JLabel creerVisuelCarte(String nom, Color bgColor, Color fgColor) 
+    {
+        JLabel lbl = new JLabel(nom, SwingConstants.CENTER);
+        lbl.setPreferredSize(new Dimension(140, 210));
+        lbl.setOpaque(true);
+        lbl.setBackground(bgColor);
+        lbl.setForeground(fgColor);
+        lbl.setFont(new Font("Arial", Font.BOLD, 14));
+        lbl.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(Color.BLACK, 2, true),
+                BorderFactory.createEmptyBorder(5, 5, 5, 5)
+        ));
+        return lbl;
     }
 }
