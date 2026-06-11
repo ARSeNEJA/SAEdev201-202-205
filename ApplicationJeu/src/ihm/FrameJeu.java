@@ -25,7 +25,7 @@ public class FrameJeu extends JFrame
 		this.setLocation( 0, 0 );
 		
 		// Création et ajout du Panel
-		this.add ( new PanelJeu(ctrl) );
+		this.add ( new PanelJeu(ctrl, ecranX, ecranY) );
 		
 		// Gestion de la fermeture de la fenêtre
 		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);

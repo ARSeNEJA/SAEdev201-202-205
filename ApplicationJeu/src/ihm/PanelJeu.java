@@ -2,127 +2,197 @@ package src.ihm;
 
 import src.Controleur;
 
-import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
+
+import java.awt.RenderingHints;
+import java.awt.Graphics2D;
+import java.awt.Graphics;
+
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Color;
+import java.awt.Font;
+
 public class PanelJeu extends JPanel
 {
-	private JPanel panelPlateau;
-	private JPanel panelInformation;
+    // Composants du panel de jeu
+	private PlateauDessin panelPlateau;
+	private JPanel        panelInformation;
+    private int           lInformation;
 
-	public PanelJeu( Controleur ctrl )
-	{
-		//this.add(new JLabel("Test 1"));
+    // Composants du panel d'information(piohe)
+    private JPanel        panelPioche;
+    private JPanel        panelCartes;
 
+    // Composants du panel d'information(defausse)
+    private JPanel        panelDefausse;
+    private JPanel        panelGridDefausse;
+
+    // Composants du panel d'information(manches)
+    private JPanel        panelManches;
+    private JPanel        panelGridManche;
+
+    // Composants du panel pioche
+    private JLabel        lblMinuterie;
+    private JButton       btnPiocher;
+    private JLabel        lblCartePiochee;
+
+    // Composants du panel defausse
+    private JScrollPane   spDefausse;
+    private JLabel[]      lblCartesDefaussee;
+
+    // Composants du panel manches
+    private JLabel        lblInfos;
+    private JLabel[]      lblScoreManche;
+    private JScrollPane   spManches;
+
+
+	public PanelJeu( Controleur ctrl, int lEcran, int hEcran )
+	{        
 		this.setLayout(new BorderLayout(10, 10));
-		
-		panelPlateau = new JPanel();
-		
-		// PANNEL de JEu ( panneau central )
-        panelPlateau.setBackground(new Color(250, 250, 250));
-        panelPlateau.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY, 2));
 
-                
-        // PANNEL INFORMATION - HUD ( Zone gauche )
+        // ================
+        //  Plateau de jeu
+        // ================
+		panelPlateau = new PlateauDessin();
+        
+        
+        // ====================
+        //  Zone d'information
+        // ====================
         panelInformation = new JPanel();
-        panelInformation.setLayout(new BoxLayout(panelInformation, BoxLayout.Y_AXIS));
-        panelInformation.setSize(320, 0);
 
-        // Zone deck
-        JPanel panelPioche = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
-        panelPioche.setBorder(BorderFactory.createTitledBorder(
-                BorderFactory.createEtchedBorder(), "Pioche", TitledBorder.LEFT, TitledBorder.TOP));
+        panelInformation.setLayout       (new BoxLayout(panelInformation, BoxLayout.Y_AXIS)   );
+        panelInformation.setPreferredSize(new Dimension((int)(lEcran * 0.18), hEcran)         );
 
-        JLabel carteRetournee = creerVisuelCarte("Pioche", new Color(70, 130, 180), Color.WHITE);
-        JLabel carteTournee   = creerVisuelCarte("Oxygène\n(Foncée)", new Color(240, 240, 240), Color.BLACK);
+        lInformation = lEcran - 20;
 
-        panelPioche.add(carteRetournee);
-        panelPioche.add(carteTournee);
 
-        JLabel lblMinuterie = new JLabel("Cartes foncées restantes : 7", SwingConstants.CENTER);
-        lblMinuterie.setFont(new Font("Arial", Font.ITALIC, 13));
-        lblMinuterie.setForeground(new Color(200, 0, 0));
-        lblMinuterie.setAlignmentX(Component.CENTER_ALIGNMENT);
+        //  PIOCHE
+        // ============
+        panelPioche = new JPanel(new BorderLayout()               );
+        panelCartes = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
 
-        // Zone carte defausse
-        JPanel panelDefausse = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
-        panelDefausse.setBorder(BorderFactory.createTitledBorder(
-                BorderFactory.createEtchedBorder(), "Défausse", TitledBorder.LEFT, TitledBorder.TOP));
+        panelPioche.setBorder       (BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Pioche"));
+        panelPioche.setPreferredSize(new Dimension((int)(lInformation * 0.2), (int)(hEcran * 0.3)));
+        panelPioche.setMinimumSize  (new Dimension(                      250, (int)(hEcran * 0.2)));
 
-        JLabel carteDefaussee = creerVisuelCarte("Carbone", new Color(200, 200, 200), Color.DARK_GRAY);
-        panelDefausse.add(carteDefaussee);
+        btnPiocher      = new JButton("Piocher"             );
+        lblCartePiochee = new JLabel ("Aucune carte piochée");
 
-        //Zone des manches et scores 
-        panelInformation = new JPanel();
-        panelInformation.setLayout(new BoxLayout(panelInformation, BoxLayout.Y_AXIS));
-        panelInformation.setPreferredSize(new Dimension(340, 0));
+        btnPiocher      = creerVisuelPioche();                                                           // A modifier pour que une image de carte sois sur le bouton
+        lblCartePiochee = creerVisuelCarte ("Carte Piochée", new Color( 70, 130, 180), Color.WHITE);     // A modifier pour que ce soit automatique en fonction de la carte piochée
 
+        lblMinuterie = new JLabel ("Cartes foncées restantes : 7", SwingConstants.CENTER);
+        lblMinuterie.setFont      (new Font("Arial", Font.ITALIC | Font.BOLD, 13)       );
+        lblMinuterie.setForeground(new Color(220, 0, 0)                                 );
+
+
+        //  Defausse
+        // ==============
+        panelDefausse     = new JPanel(new BorderLayout()          );
+        panelGridDefausse = new JPanel(new GridLayout(0, 3, 10, 10));
+        spDefausse        = new JScrollPane(panelGridDefausse, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+
+        panelDefausse.setBorder       (BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Défausse"));
+        panelDefausse.setPreferredSize(new Dimension((int)(lInformation * 0.2), (int)(hEcran * 0.3)));
+        panelDefausse.setMinimumSize  (new Dimension(                      250, (int)(hEcran * 0.2)));
+
+        lblCartesDefaussee    = new JLabel[12];
+        for (int i = 0; i < lblCartesDefaussee.length; i++)
+        {
+            lblCartesDefaussee[i] = creerVisuelCarte("Carbone", new Color(200, 200, 200), Color.DARK_GRAY); // A remplacer par les images de cartes
+            lblCartesDefaussee[i].setPreferredSize  (new Dimension(70, 145)                              ); //
+        } 
+
+
+        //  Manches
+        // =============
+        panelManches    = new JPanel(new BorderLayout()         );
+        panelGridManche = new JPanel(new GridLayout(0, 1, 0, 10));
+        spManches       = new JScrollPane(panelGridManche, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+
+        panelManches.setBorder       (BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Progression"));
+        panelManches.setPreferredSize(new Dimension((int)(lInformation * 0.2), (int)(hEcran * 0.40)));
+        panelManches.setMinimumSize  (new Dimension(                      250, (int)(hEcran * 0.15)));
         
-        JPanel panelMancheScore = new JPanel(new GridLayout(3, 1, 5, 5));
-        panelMancheScore.setBorder(BorderFactory.createTitledBorder(
-                BorderFactory.createEtchedBorder(), "Progression", TitledBorder.LEFT, TitledBorder.TOP));
+        lblInfos  = new JLabel(String.format("%40s" , "Informations  Zones | Atomes | Résultat"));
+        panelGridManche.add(lblInfos);
+
+        lblScoreManche = new JLabel[10];
+        for (int i = 0; i < lblScoreManche.length; i++)
+        {
+            lblScoreManche[i] = new JLabel (String.format("%40s" , "Manche " + (i + 1) + "         5   x   2      =    10")); // A changer pour etre automatique
+            lblScoreManche[i].setFont      (new Font("Arial", Font.PLAIN, 15)                                              ); //
+            lblScoreManche[i].setForeground(Color.BLACK                                                                    ); //
+            lblScoreManche[i].setBorder    (BorderFactory.createMatteBorder(1, 1, 1, 1, Color.GRAY)                        ); //
+            lblScoreManche[i].setPreferredSize(new Dimension(300, 50)                                                      ); //
+        }
+
+        // ======================
+        //  Ajout des composants
+        // ======================
+        // Ajout des composants du panel Pioche
+        panelCartes.add(btnPiocher     );
+        panelCartes.add(lblCartePiochee);
+
+        panelPioche.add(panelCartes,  BorderLayout.CENTER);
+        panelPioche.add(lblMinuterie, BorderLayout.SOUTH );
+
+        // Ajout des composants du panel Défausse
+        for (JLabel lbl : lblCartesDefaussee)
+            panelGridDefausse.add(lbl);
+
+        panelDefausse.add(spDefausse, BorderLayout.CENTER);
+
+        // Ajout des composants du panel Information
+        for (JLabel lbl : lblScoreManche)
+            panelGridManche.add(lbl);
         
-        JLabel lblManche      = new JLabel("Manche actuelle : 2 / 5", SwingConstants.CENTER);
-        JLabel lblScoreManche = new JLabel("Score de la chaîne : 12 pts", SwingConstants.CENTER);
-        JLabel lblScoreTotal  = new JLabel("Score total : 45 pts", SwingConstants.CENTER);
-        
-        lblManche.setFont(new Font("Arial", Font.BOLD, 15));
-        lblManche.setForeground(new Color(0, 102, 204)); 
-        lblScoreManche.setFont(new Font("Arial", Font.PLAIN, 14));
-        lblScoreTotal.setFont(new Font("Arial", Font.BOLD, 14));
-        
-        panelMancheScore.add(lblManche);
-        panelMancheScore.add(lblScoreManche);
-        panelMancheScore.add(lblScoreTotal);
-        
-        
-        panelInformation.add(panelPioche);
-        panelInformation.add(Box.createVerticalStrut(5));
-        panelInformation.add(lblMinuterie);
-        panelInformation.add(Box.createVerticalStrut(15));
+        panelManches.add(spManches, BorderLayout.CENTER);
+
+        // Ajout des panels de la zone d'information
+        panelInformation.add(panelPioche  );
         panelInformation.add(panelDefausse);
-        panelInformation.add(Box.createVerticalGlue()); 
-        panelInformation.add(panelMancheScore);
-        panelInformation.add(Box.createVerticalStrut(15));
-        
+        panelInformation.add(panelManches );
 
-        this.add(panelPlateau, BorderLayout.CENTER);
-        this.add(panelInformation, BorderLayout.WEST);
+        // Ajout des panels du jeu a la fenêtre
+        this.add(panelInformation, BorderLayout.WEST  );
+        this.add(panelPlateau,     BorderLayout.CENTER);
 	}
 
-    protected void paintComponent(Graphics g) 
-	{
-		super.paintComponent(g); 
-			
-		Graphics2D g2 = (Graphics2D) g;
-        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
-        // Dessin d'une grille témoin
-        g2.setColor(new Color(220, 220, 220));
-        int tailleCase = 60;  //a modifier en fonction de la taille du plateau
-        for (int i = 0; i < this.getWidth(); i += tailleCase) {
-            g2.drawLine(i, 0, i, this.getHeight());
-        }
-        for (int j = 0; j < this.getHeight(); j += tailleCase) {
-            g2.drawLine(0, j, this.getWidth(), j);
-        }
-
-            
-    }
-
-    private JLabel creerVisuelCarte(String texte, Color fond, Color couleurTexte) 
+    private JButton creerVisuelPioche() 
     {
-        JLabel lblCarte = new JLabel("<html><center>" + texte.replace("\n", "<br>") + "</center></html>", SwingConstants.CENTER);
-        lblCarte.setPreferredSize(new Dimension(100, 140));
-        lblCarte.setOpaque(true);
-        lblCarte.setBackground(fond);
-        lblCarte.setForeground(couleurTexte);
-        lblCarte.setFont(new Font("Arial", Font.BOLD, 14));
-        lblCarte.setBorder(BorderFactory.createCompoundBorder(
+        JButton btn = new JButton("Piocher");
+        btn.setPreferredSize(new Dimension(140, 210));
+        btn.setOpaque(true);
+        btn.setBackground(new Color(70, 130, 180));
+        btn.setForeground(Color.WHITE);
+        btn.setFont(new Font("Arial", Font.BOLD, 14));
+        btn.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(Color.BLACK, 2, true),
                 BorderFactory.createEmptyBorder(5, 5, 5, 5)
         ));
-        return lblCarte;
+        return btn;
+    }
+
+    private JLabel creerVisuelCarte(String nom, Color bgColor, Color fgColor) 
+    {
+        JLabel lbl = new JLabel(nom, SwingConstants.CENTER);
+        lbl.setPreferredSize(new Dimension(140, 210));
+        lbl.setOpaque(true);
+        lbl.setBackground(bgColor);
+        lbl.setForeground(fgColor);
+        lbl.setFont(new Font("Arial", Font.BOLD, 14));
+        lbl.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(Color.BLACK, 2, true),
+                BorderFactory.createEmptyBorder(5, 5, 5, 5)
+        ));
+        return lbl;
     }
 }
