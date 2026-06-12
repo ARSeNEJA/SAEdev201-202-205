@@ -14,3 +14,6 @@ ApplicationJeu/src/metier/Manche.java
 ApplicationJeu/src/metier/Jeu.java
 ApplicationJeu/src/ihm/FrameJeu.java
 ApplicationJeu/src/ihm/PanelJeu.java
+ApplicationJeu/src/ihm/PlateauDessin.java
+ApplicationJeu/src/ihm/FrameFermeture.java
+ApplicationJeu/src/ihm/PanelFermeture.java
