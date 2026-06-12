@@ -8,6 +8,9 @@ import src.metier.enums.TypePioche;
 
 public class Plateau
 {
+	/*-------------------*/
+	/*    Attributs      */
+	/*-------------------*/
 	private int largeur;
 	private int hauteur;
 	private int tailleCase;
@@ -17,6 +20,10 @@ public class Plateau
 	private ArrayList<Zone> zones;
 	private ArrayList<Atome> atomes;
 
+	/*-------------------*/
+	/*   Constructeur    */
+	/*-------------------*/
+	// Cree le plateau.
 	public Plateau(int largeur, int hauteur, int tailleCase)
 	{
 		this.largeur = largeur;
@@ -29,25 +36,42 @@ public class Plateau
 		this.atomes = new ArrayList<>();
 	}
 
+	/*-------------------*/
+	/*   Accesseurs      */
+	/*-------------------*/
+	// Renvoie la largeur.
 	public int getLargeur() {return this.largeur;}
+	// Renvoie la hauteur.
 	public int getHauteur() {return this.hauteur;}
+	// Renvoie la taille case.
 	public int getTailleCase() {return this.tailleCase;}
+	// Renvoie le type pioche.
 	public TypePioche getTypePioche() {return this.typePioche;}
+	// Renvoie les types.
 	public ArrayList<TypeAtome> getTypesSelectionnes() {return this.typesSelectionnes;}
+	// Renvoie les couleurs.
 	public ArrayList<Couleur> getCouleursSelectionnees() {return this.couleursSelectionnees;}
+	// Renvoie les zones.
 	public ArrayList<Zone> getZones() {return this.zones;}
+	// Renvoie les atomes.
 	public ArrayList<Atome> getAtomes() {return this.atomes;}
 
+	/*-------------------*/
+	/*    Methodes       */
+	/*-------------------*/
+	// Definit le type pioche.
 	public void setTypePioche(TypePioche typePioche)
 	{
 		this.typePioche = typePioche;
 	}
 
+	// Teste les limites.
 	public boolean caseExiste(int colonne, int ligne)
 	{
 		return colonne >= 0 && ligne >= 0 && colonne < this.largeur && ligne < this.hauteur;
 	}
 
+	// Cherche un atome.
 	public Atome getAtomeCase(int colonne, int ligne)
 	{
 		for (int i = 0; i < this.atomes.size(); i++)
@@ -58,6 +82,7 @@ public class Plateau
 		return null;
 	}
 
+	// Cherche une zone.
 	public Zone getZoneCase(int colonne, int ligne)
 	{
 		for (int i = 0; i < this.zones.size(); i++)
@@ -67,12 +92,14 @@ public class Plateau
 		return null;
 	}
 
+	// Cherche la zone atome.
 	public Zone getZoneAtome(Atome atome)
 	{
 		if (atome == null) {return null;}
 		return this.getZoneCase(atome.getPosition().getColonne(), atome.getPosition().getLigne());
 	}
 
+	// Ajoute un atome.
 	public void ajouterAtome(Atome atome)
 	{
 		if (atome != null && this.getAtomeCase(atome.getPosition().getColonne(), atome.getPosition().getLigne()) == null)
@@ -81,6 +108,7 @@ public class Plateau
 		}
 	}
 
+	// Renvoie les bases.
 	public ArrayList<Atome> getBases()
 	{
 		ArrayList<Atome> bases = new ArrayList<>();
@@ -91,6 +119,7 @@ public class Plateau
 		return bases;
 	}
 
+	// Calcule les voisins.
 	public void calculerVoisinsAtomes()
 	{
 		for (int i = 0; i < this.atomes.size(); i++)
@@ -118,6 +147,7 @@ public class Plateau
 		}
 	}
 
+	// Cherche dans une direction.
 	private Atome chercherPremierAtomeDirection(Atome depart, int dc, int dl)
 	{
 		int colonne = depart.getPosition().getColonne() + dc;

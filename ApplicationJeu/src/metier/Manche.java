@@ -6,6 +6,9 @@ import src.metier.enums.Couleur;
 
 public class Manche
 {
+	/*-------------------*/
+	/*    Attributs      */
+	/*-------------------*/
 	private Couleur couleur;
 	private Atome base;
 	private ArrayList<Atome> chaine;
@@ -13,6 +16,9 @@ public class Manche
 	private int maxAtomesZone;
 	private int nbZonesVisitees;
 
+	/*-------------------*/
+	/*   Constructeur    */
+	/*-------------------*/
 	// Cree une manche.
 	public Manche(Atome base)
 	{
@@ -25,6 +31,9 @@ public class Manche
 		this.nbZonesVisitees = 0;
 	}
 
+	/*-------------------*/
+	/*   Accesseurs      */
+	/*-------------------*/
 	// Renvoie la couleur.
 	public Couleur getCouleur() {return this.couleur;}
 	// Renvoie la base.
@@ -38,6 +47,9 @@ public class Manche
 	// Renvoie les zones visitees.
 	public int getNbZonesVisitees() {return this.nbZonesVisitees;}
 
+	/*-------------------*/
+	/*    Methodes       */
+	/*-------------------*/
 	// Calcule le score.
 	public void setScore(int maxAtomesZone, int nbZonesVisitees)
 	{

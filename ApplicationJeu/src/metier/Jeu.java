@@ -5,6 +5,9 @@ import java.util.Random;
 
 public class Jeu
 {
+	/*-------------------*/
+	/*    Attributs      */
+	/*-------------------*/
 	private Plateau plateau;
 	private ArrayList<Atome> basesDisponibles;
 	private ArrayList<Manche> manches;
@@ -15,6 +18,9 @@ public class Jeu
 	private String message;
 	private boolean modeDemo;
 
+	/*-------------------*/
+	/*   Constructeur    */
+	/*-------------------*/
 	// Cree un jeu normal.
 	public Jeu(Plateau plateau)
 	{
@@ -35,6 +41,9 @@ public class Jeu
 		this.demarrerMancheSuivante();
 	}
 
+	/*-------------------*/
+	/*   Accesseurs      */
+	/*-------------------*/
 	// Renvoie le plateau.
 	public Plateau getPlateau() {return this.plateau;}
 	// Renvoie les manches.
@@ -52,6 +61,9 @@ public class Jeu
 	// Renvoie le nombre de manches.
 	public int getNombreManches() {return this.basesDisponibles.size();}
 
+	/*-------------------*/
+	/*    Methodes       */
+	/*-------------------*/
 	// Melange les bases de depart.
 	private void melangerBases()
 	{

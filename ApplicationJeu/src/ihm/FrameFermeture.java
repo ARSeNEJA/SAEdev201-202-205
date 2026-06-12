@@ -8,11 +8,17 @@ import java.awt.Dimension;
 
 public class FrameFermeture extends JFrame
 {
+	/*-------------------*/
+	/*    Attributs      */
+	/*-------------------*/
 	private Dimension tailleEcran;
 	private int       ecranX, ecranY;
 	
 	private int       tailleFrameX, tailleFrameY;
 	
+	/*-------------------*/
+	/*   Constructeur    */
+	/*-------------------*/
 	// Cree la fenetre de confirmation centree a l'ecran.
 	public FrameFermeture( Controleur ctrl )
 	{
@@ -40,6 +46,7 @@ public class FrameFermeture extends JFrame
 
 
 	// Ferme la fenetre de confirmation.
+	// Ferme la fenetre.
 	public void fermerFenetre()
 	{
 		this.dispose();

@@ -11,6 +11,7 @@ import src.metier.enums.TypePioche;
 
 public class LirePlateau
 {
+	// Lit un fichier plateau.
 	public Plateau lire(File fichier) throws IOException
 	{
 		Plateau plateau = null;

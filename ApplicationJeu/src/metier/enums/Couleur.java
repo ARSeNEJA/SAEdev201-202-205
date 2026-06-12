@@ -4,6 +4,10 @@ public enum Couleur
 {
 	ROUGE,VERT,BLEU,MARRON;
 
+	/*-------------------*/
+	/*    Methodes       */
+	/*-------------------*/
+	// Renvoie le nom.
 	public String getNom()
 	{
 		if (this == ROUGE) {return "Rouge";}

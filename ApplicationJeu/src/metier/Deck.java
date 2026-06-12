@@ -8,26 +8,53 @@ import src.metier.enums.Variante;
 
 public class Deck
 {
+	/*-------------------*/
+	/*    Attributs      */
+	/*-------------------*/
 	private ArrayList<Carte> pioche;
 	private ArrayList<Carte> defausse;
 	private Carte carteCourante;
 	private int cartesFonceesRestantes;
 
+	/*-------------------*/
+	/*   Constructeur    */
+	/*-------------------*/
+	// Cree une pioche melangee.
 	public Deck(ArrayList<TypeAtome> types)
 	{
-		this.pioche = new ArrayList<>();
-		this.defausse = new ArrayList<>();
+		this(types, false);
+	}
+
+	// Cree la pioche selon le mode choisi.
+	public Deck(ArrayList<TypeAtome> types, boolean modeDemo)
+	{
+		this.pioche = new ArrayList<Carte>();
+		this.defausse = new ArrayList<Carte>();
 		this.cartesFonceesRestantes = 0;
 		this.generer(types);
-		this.melanger();
+		if (!modeDemo)
+		{
+			this.melanger();
+		}
 		this.piocherSuivante();
 	}
 
+	/*-------------------*/
+	/*   Accesseurs      */
+	/*-------------------*/
+	// Renvoie la carte a jouer.
 	public Carte getCarteCourante() {return this.carteCourante;}
+	// Renvoie les cartes defaussees.
 	public ArrayList<Carte> getDefausse() {return this.defausse;}
+	// Renvoie les cartes foncees restantes.
 	public int getCartesFonceesRestantes() {return this.cartesFonceesRestantes;}
+	// Renvoie la taille de la pioche.
 	public int getTaillePioche() {return this.pioche.size();}
 
+	/*-------------------*/
+	/*    Methodes       */
+	/*-------------------*/
+	// Genere les cartes du deck.
 	private void generer(ArrayList<TypeAtome> types)
 	{
 		for (int i = 0; i < types.size(); i++)
@@ -37,6 +64,7 @@ public class Deck
 		this.ajouterPaireJoker();
 	}
 
+	// Ajoute claire et foncee.
 	private void ajouterPaire(TypeAtome type)
 	{
 		this.pioche.add(new Carte(type, Variante.CLAIRE));
@@ -44,6 +72,7 @@ public class Deck
 		this.cartesFonceesRestantes++;
 	}
 
+	// Ajoute les deux jokers.
 	private void ajouterPaireJoker()
 	{
 		this.pioche.add(new Carte(Variante.CLAIRE));
@@ -51,6 +80,7 @@ public class Deck
 		this.cartesFonceesRestantes++;
 	}
 
+	// Melange les cartes.
 	private void melanger()
 	{
 		Random random = new Random();
@@ -63,6 +93,7 @@ public class Deck
 		}
 	}
 
+	// Defausse la carte courante.
 	public Carte consommerCarteCourante()
 	{
 		Carte carte = this.carteCourante;
@@ -75,6 +106,7 @@ public class Deck
 		return carte;
 	}
 
+	// Pioche la carte suivante.
 	public void piocherSuivante()
 	{
 		if (this.pioche.isEmpty())

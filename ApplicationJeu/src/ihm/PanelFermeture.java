@@ -10,6 +10,9 @@ import java.awt.GridLayout;
 
 public class PanelFermeture extends JPanel implements ActionListener
 {
+	/*-------------------*/
+	/*    Attributs      */
+	/*-------------------*/
 	private Controleur     ctrl;
 	private FrameFermeture frameFermeture;
 	
@@ -19,6 +22,9 @@ public class PanelFermeture extends JPanel implements ActionListener
 	
 	private JLabel         lblMessage;
 	
+	/*-------------------*/
+	/*   Constructeur    */
+	/*-------------------*/
 	// Cree le message de confirmation et les boutons Oui/Non.
 	public PanelFermeture( Controleur ctrl )
 	{
@@ -57,6 +63,7 @@ public class PanelFermeture extends JPanel implements ActionListener
 
 
 	// Traite le choix de l'utilisateur lors de la fermeture.
+	// Gere Oui ou Non.
 	public void actionPerformed(ActionEvent e)
 	{
 		if ( e.getSource() == this.btnNon )
